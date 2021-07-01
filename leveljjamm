@@ -1,0 +1,7 @@
+#!/usr/bin/python3
+
+# This is our main excutable, this will pull functions from the other files to run all of them here
+
+from move import *
+from map import * 
+
