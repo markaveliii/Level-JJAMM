@@ -6,23 +6,23 @@ class Map:
     winCond = 'L'
     
     def printTileLets(self):
-        for x in range(self.maxX):
+        for y in range(self.maxX):
             #print(y)
-            for y in range(self.maxY):
+            for x in range(self.maxY):
                 # print(x)
                 # print('[',x,'][',y,']: ', end = '')
                 # print(tile[x][y])
-                print(self.tileArr[x][y], end = '')
+                print(self.tileArr[y][x], end = '')
             print()
 
     def printObjLets(self):
-        for x in range(self.maxX):
+        for y in range(self.maxX):
             #print(y)
-            for y in range(self.maxY):
+            for x in range(self.maxY):
                 # print(x)
                 # print('[',x,'][',y,']: ', end = '')
                 # print(tile[x][y])
-                print(self.objArr[x][y], end = '')
+                print(self.objArr[y][x], end = '')
             print()
 
 
@@ -49,7 +49,7 @@ class Map:
             if line != '\n':
                 for character in line:
                     self.tileArr[y][x] = character
-                    # print('[',y,'][',x,']: ',tile[y][x])
+                    # print('[',y,'][',x,']: ',self.tileArr[y][x])
                     x += 1
                 y += 1
             else:
