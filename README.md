@@ -14,5 +14,5 @@ To run the program once it is built, say
 + 3 rooms set up and working: Title Screen, room 1, room 2, including 1 weapon, 1 emeny, 2 different objectives, display of Lives and Timer
 
 **Week 8:**
- Ability to insert custom levels
+ + Ability to insert custom levels
 + 10 initial rooms for the user to play through including, 4 enemies, 3 weapons, display of total items and marks which item is in use, better start screen
