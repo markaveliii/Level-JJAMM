@@ -78,7 +78,9 @@ class Map:
 
 
     def switchCase(self, obj):
-        if obj == '1':
+        if obj.isupper():
+            return obj, 7
+        elif obj == '1':
             return 'X', 1
 
         elif obj == 's':
@@ -124,43 +126,43 @@ class Map:
         curses.init_pair(6, curses.COLOR_BLACK, curses.COLOR_CYAN)
         curses.init_pair(7, curses.COLOR_RED, curses.COLOR_BLACK)
 
+        for y in range(self.maxX):
+            for x in range(self.maxY):
+                symbol, color = self.switchCase(self.objArr[y][x])
+                stdscr.addstr(y, x, symbol, curses.color_pair(color))
         while True:
             c = stdscr.getch()
             if c == ord('q'):
                 break
-            for y in range(self.maxX):
-                for x in range(self.maxY):
-                    symbol, color = self.switchCase(self.objArr[y][x])
-                    stdscr.addstr(y, x, symbol, curses.color_pair(color))
-                    '''
-                    switch (self.objArr[y][x]){
-                            case '-':
-                            default:
-                                stdscr.addstr(y, x, ' ', curses.color_pair(4))
-                                break
-                            case '1':
-                                stdscr.addstr(y, x, 'X', curses.color_pair(1))
-                                break
-                            case 's':
-                                stdscr.addstr(y, x, '|', curses.color_pair(5))
-                                break
-                            case 'b':
-                                stdscr.addstr(y, x, 'M', curses.color_pair(5))
-                                break
-                            case 'p':
-                                stdscr.addstr(y, x, 'U', curses.color_pair(2))
-                                break
-                            case 'k':
-                                stdscr.addstr(y, x, 'P', curses.color_pair(3))
-                                break
-                            case 'e':
-                                stdscr.addstr(y, x, 'O', curses.color_pair(6))
-                                break
-                            case 'w':
-                                stdscr.addstr(y, x, ' ', curses.color_pair(0))
-                                break
-                        } # End of Switch statements
-                        '''
+        '''
+        switch (self.objArr[y][x]){
+                case '-':
+                default:
+                    stdscr.addstr(y, x, ' ', curses.color_pair(4))
+                    break
+                case '1':
+                    stdscr.addstr(y, x, 'X', curses.color_pair(1))
+                    break
+                case 's':
+                    stdscr.addstr(y, x, '|', curses.color_pair(5))
+                    break
+                case 'b':
+                    stdscr.addstr(y, x, 'M', curses.color_pair(5))
+                    break
+                case 'p':
+                    stdscr.addstr(y, x, 'U', curses.color_pair(2))
+                    break
+                case 'k':
+                    stdscr.addstr(y, x, 'P', curses.color_pair(3))
+                    break
+                case 'e':
+                    stdscr.addstr(y, x, 'O', curses.color_pair(6))
+                    break
+                case 'w':
+                    stdscr.addstr(y, x, ' ', curses.color_pair(0))
+                    break
+            } # End of Switch statements
+            '''
                                 
 
         stdscr.clear()
@@ -178,8 +180,9 @@ if __name__ == "__main__":
     # inFile = input('input the map file: ')
     mapObj = Map()
     inFile = []
+    inFile.append('lvDebug.txt')
     inFile.append('lv1.txt')
-    #inFile.append('lvl2.txt')
+    inFile.append('lv2.txt')
 
     fileNum = 0
     for fi in inFile:
