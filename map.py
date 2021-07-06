@@ -1,5 +1,6 @@
 import curses
 from curses import wrapper
+import os
 
 class Map:
     tileArr = []
@@ -90,13 +91,13 @@ class Map:
             return 'M', 5
 
         elif obj == 'p':
-            return 'U', 2
+            return ' ', 2
 
         elif obj == 'k':
-            return 'P', 3
+            return ' ', 3
 
         elif obj == 'e':
-            return 'O', 6
+            return ' ', 6
 
         elif obj == 'w':
             return ' ', 7
@@ -106,7 +107,6 @@ class Map:
 
 
     def displayMap(self):
-        print('in displayMap: ')
         stdscr = curses.initscr()
         curses.noecho()
         curses.cbreak()
@@ -177,29 +177,43 @@ class Map:
 
 if __name__ == "__main__":
 
-    # inFile = input('input the map file: ')
+    # path = input('input the directory name: ')
+    path = 'levels'
+    path = './' + path
     mapObj = Map()
     inFile = []
-    inFile.append('lvDebug.txt')
-    inFile.append('lv1.txt')
-    inFile.append('lv2.txt')
+    #inFile.append('lvDebug.txt')
+    #inFile.append('lv1.txt')
+    #inFile.append('lv2.txt')
+    path = './levels'
+
+    for root, directories, files in os.walk(path, topdown=False): # https://careerkarma.com/blog/python-list-files-in-directory/
+        for name in files:
+            # print(os.path.join(root, name))
+            inFile.append(os.path.join(root, name))
+        for name in directories:
+            # print(os.path.join(root, name))
+            inFile.append(os.path.join(root, name))
+    print(inFile)
+    inFile.sort()
+    print(inFile)
 
     fileNum = 0
     for fi in inFile:
 
         # tileArr, objArr, maxY, maxX = loadMap(inFile[fileNum])
         mapObj.loadMap(inFile[fileNum])
-        print('maxY: ', mapObj.maxY)
-        print('maxX: ', mapObj.maxX)
-        print('winCond: ', mapObj.winCond)
+        #print('maxY: ', mapObj.maxY)
+        #print('maxX: ', mapObj.maxX)
+        #print('winCond: ', mapObj.winCond)
         # print(tileArr)
         # print(objArr)
 
         #printTileLets(tileArr, maxY, maxX)
-        mapObj.printTileLets()
+        #mapObj.printTileLets()
         print()
         #printObjLets(objArr, maxY, maxX)
-        mapObj.printObjLets()
+        #mapObj.printObjLets()
         # curses.wrapper(mapObj.displayMap)
         mapObj.displayMap()
         fileNum += 1
