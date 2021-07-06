@@ -1,3 +1,6 @@
+import curses
+from curses import wrapper
+
 class Map:
     tileArr = []
     objArr = []
@@ -73,13 +76,110 @@ class Map:
                     self.winCond = character
         #return tile, obj, maxY, maxX
 
+
+    def switchCase(self, obj):
+        if obj == '1':
+            return 'X', 1
+
+        elif obj == 's':
+            return '|', 5
+
+        elif obj == 'b':
+            return 'M', 5
+
+        elif obj == 'p':
+            return 'U', 2
+
+        elif obj == 'k':
+            return 'P', 3
+
+        elif obj == 'e':
+            return 'O', 6
+
+        elif obj == 'w':
+            return ' ', 7
+
+        else:
+            return ' ', 4
+
+
+    def displayMap(self):
+        print('in displayMap: ')
+        stdscr = curses.initscr()
+        curses.noecho()
+        curses.cbreak()
+        stdscr.keypad(True)
+
+        winY = curses.LINES - 1
+        winX = curses.COLS - 1
+
+        win = curses.newwin(winY, winX, 0, 0)
+        curses.start_color()
+        # curses.init_pair(0, curses.COLOR_BLACK, curses.COLOR_BLACK)
+        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_RED)
+        curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_GREEN)
+        curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_YELLOW)
+        curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_BLUE)
+        curses.init_pair(5, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
+        curses.init_pair(6, curses.COLOR_BLACK, curses.COLOR_CYAN)
+        curses.init_pair(7, curses.COLOR_RED, curses.COLOR_BLACK)
+
+        while True:
+            c = stdscr.getch()
+            if c == ord('q'):
+                break
+            for y in range(self.maxX):
+                for x in range(self.maxY):
+                    symbol, color = self.switchCase(self.objArr[y][x])
+                    stdscr.addstr(y, x, symbol, curses.color_pair(color))
+                    '''
+                    switch (self.objArr[y][x]){
+                            case '-':
+                            default:
+                                stdscr.addstr(y, x, ' ', curses.color_pair(4))
+                                break
+                            case '1':
+                                stdscr.addstr(y, x, 'X', curses.color_pair(1))
+                                break
+                            case 's':
+                                stdscr.addstr(y, x, '|', curses.color_pair(5))
+                                break
+                            case 'b':
+                                stdscr.addstr(y, x, 'M', curses.color_pair(5))
+                                break
+                            case 'p':
+                                stdscr.addstr(y, x, 'U', curses.color_pair(2))
+                                break
+                            case 'k':
+                                stdscr.addstr(y, x, 'P', curses.color_pair(3))
+                                break
+                            case 'e':
+                                stdscr.addstr(y, x, 'O', curses.color_pair(6))
+                                break
+                            case 'w':
+                                stdscr.addstr(y, x, ' ', curses.color_pair(0))
+                                break
+                        } # End of Switch statements
+                        '''
+                                
+
+        stdscr.clear()
+        stdscr.refresh()
+
+        curses.nocbreak()
+        stdscr.keypad(False)
+        curses.echo()
+        curses.endwin()
+
+
+
 if __name__ == "__main__":
 
     # inFile = input('input the map file: ')
     mapObj = Map()
     inFile = []
     inFile.append('lv1.txt')
-    inFile.append('lvl2.txt')
+    #inFile.append('lvl2.txt')
 
     fileNum = 0
     for fi in inFile:
@@ -97,12 +197,14 @@ if __name__ == "__main__":
         print()
         #printObjLets(objArr, maxY, maxX)
         mapObj.printObjLets()
+        # curses.wrapper(mapObj.displayMap)
+        mapObj.displayMap()
         fileNum += 1
 
 
-    '''
-    for yval in tile:
-        for xval in yval:
-            print(xval, end = '')
-        print()
-    '''
+'''
+for yval in tile:
+    for xval in yval:
+        print(xval, end = '')
+    print()
+'''
