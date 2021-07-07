@@ -1,6 +1,6 @@
 import curses
 from curses import wrapper
-import os
+#import os
 
 class Map:
     tileArr = []
@@ -13,9 +13,6 @@ class Map:
         for y in range(self.maxX):
             #print(y)
             for x in range(self.maxY):
-                # print(x)
-                # print('[',x,'][',y,']: ', end = '')
-                # print(tile[x][y])
                 print(self.tileArr[y][x], end = '')
             print()
 
@@ -23,9 +20,6 @@ class Map:
         for y in range(self.maxX):
             #print(y)
             for x in range(self.maxY):
-                # print(x)
-                # print('[',x,'][',y,']: ', end = '')
-                # print(tile[x][y])
                 print(self.objArr[y][x], end = '')
             print()
 
@@ -40,8 +34,6 @@ class Map:
             else:
                 break
         self.maxX += 1
-        # print('maxY: ', maxY)
-        # print('maxX: ', maxX)
         self.tileArr = [[0 for y in range(self.maxY+1)] for x in range(self.maxX)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
         self.objArr = [[0 for y in range(self.maxY+1)] for x in range(self.maxX)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
         y = 0
@@ -49,11 +41,9 @@ class Map:
         curFile.seek(0) # https://www.tutorialspoint.com/How-to-use-seek-method-to-reset-a-file-read-write-position-in-Python
         for line in curFile:
             x = 0
-            # print(line)
             if line != '\n':
                 for character in line:
                     self.tileArr[y][x] = character
-                    # print('[',y,'][',x,']: ',self.tileArr[y][x])
                     x += 1
                 y += 1
             else:
@@ -61,11 +51,9 @@ class Map:
         y = 0
         for line in curFile:
             x = 0
-            # print(line)
             if line != '\n':
                 for character in line:
                     self.objArr[y][x] = character
-                    # print('[',y,'][',x,']: ',tile[y][x])
                     x += 1
                 y += 1
             else:
@@ -75,10 +63,9 @@ class Map:
             for character in line:
                 if character != '\n':
                     self.winCond = character
-        #return tile, obj, maxY, maxX
 
 
-    def switchCase(self, obj):
+    def mapSwitch(self, obj):
         if obj.isupper():
             return obj, 7
         elif obj == '1':
@@ -128,12 +115,21 @@ class Map:
 
         for y in range(self.maxX):
             for x in range(self.maxY):
-                symbol, color = self.switchCase(self.objArr[y][x])
+                symbol, color = self.mapSwitch(self.objArr[y][x])
                 stdscr.addstr(y, x, symbol, curses.color_pair(color))
         while True:
             c = stdscr.getch()
             if c == ord('q'):
                 break
+
+        stdscr.clear()
+        stdscr.refresh()
+
+        curses.nocbreak()
+        stdscr.keypad(False)
+        curses.echo()
+        curses.endwin()
+
         '''
         switch (self.objArr[y][x]){
                 case '-':
@@ -165,58 +161,9 @@ class Map:
             '''
                                 
 
-        stdscr.clear()
-        stdscr.refresh()
-
-        curses.nocbreak()
-        stdscr.keypad(False)
-        curses.echo()
-        curses.endwin()
 
 
 
-if __name__ == "__main__":
-
-    # path = input('input the directory name: ')
-    path = 'levels'
-    path = './' + path
-    mapObj = Map()
-    inFile = []
-    #inFile.append('lvDebug.txt')
-    #inFile.append('lv1.txt')
-    #inFile.append('lv2.txt')
-    path = './levels'
-
-    for root, directories, files in os.walk(path, topdown=False): # https://careerkarma.com/blog/python-list-files-in-directory/
-        for name in files:
-            # print(os.path.join(root, name))
-            inFile.append(os.path.join(root, name))
-        for name in directories:
-            # print(os.path.join(root, name))
-            inFile.append(os.path.join(root, name))
-    print(inFile)
-    inFile.sort()
-    print(inFile)
-
-    fileNum = 0
-    for fi in inFile:
-
-        # tileArr, objArr, maxY, maxX = loadMap(inFile[fileNum])
-        mapObj.loadMap(inFile[fileNum])
-        #print('maxY: ', mapObj.maxY)
-        #print('maxX: ', mapObj.maxX)
-        #print('winCond: ', mapObj.winCond)
-        # print(tileArr)
-        # print(objArr)
-
-        #printTileLets(tileArr, maxY, maxX)
-        #mapObj.printTileLets()
-        print()
-        #printObjLets(objArr, maxY, maxX)
-        #mapObj.printObjLets()
-        # curses.wrapper(mapObj.displayMap)
-        mapObj.displayMap()
-        fileNum += 1
 
 
 '''

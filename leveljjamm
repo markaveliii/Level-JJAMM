@@ -2,5 +2,53 @@
 
 # This is our main excutable, this will pull functions from the other files to run all of them here
 
-from map import * 
+#import curses
+#from curses import wrapper
+import os
+import mapfi
+import creature
+import menu
+import player
 
+
+if __name__ == "__main__":
+
+    # path = input('input the directory name: ')
+    path = 'levels'
+    path = './' + path
+    mapObj = mapfi.Map()
+    inFile = []
+    #inFile.append('lvDebug.txt')
+    #inFile.append('lv1.txt')
+    #inFile.append('lv2.txt')
+    path = './levels'
+
+    for root, directories, files in os.walk(path, topdown=False): # https://careerkarma.com/blog/python-list-files-in-directory/
+        for name in files:
+            # print(os.path.join(root, name))
+            inFile.append(os.path.join(root, name))
+        for name in directories:
+            # print(os.path.join(root, name))
+            inFile.append(os.path.join(root, name))
+    inFile.sort()
+
+    fileNum = 0
+    for fi in inFile:
+
+        # tileArr, objArr, maxY, maxX = loadMap(inFile[fileNum])
+        mapObj.loadMap(inFile[fileNum])
+        mapObj.displayMap()
+        fileNum += 1
+
+        #print('maxY: ', mapObj.maxY)
+        #print('maxX: ', mapObj.maxX)
+        #print('winCond: ', mapObj.winCond)
+        # print(tileArr)
+        # print(objArr)
+
+        #printTileLets(tileArr, maxY, maxX)
+        #mapObj.printTileLets()
+        # print()
+        #printObjLets(objArr, maxY, maxX)
+        #mapObj.printObjLets()
+        # curses.wrapper(mapObj.displayMap)
