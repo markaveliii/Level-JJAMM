@@ -3,7 +3,7 @@
 **Joint effort by:** Jerry Smedley, Jacob Hilt, Melissa Barnes, Mark Montes, Anthony Chin
 
 ## Description
-This repository contains a single player game with various levels for the player to beat. Each level contains obstacles, goals and sometimes enemies. 
+This repository contains a single player game with various levels for the player to beat. Each level contains obstacles, goals and sometimes enemies. The player will start off without any weapons but as the player progresses they will obtain various weapons. 
 
 ## Build and Run
 To run the program once it is built, say
