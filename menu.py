@@ -21,7 +21,7 @@ class Menu:
 		lives = "Lives: " + str(livesNum)
 		title = "Menu:"
 		current_time = round(time.time(),2)
-		time_elapsed = "Time Elapsed: " + str(current_time - self.start_time)
+		time_elapsed = "Time Elapsed: " + str(round((current_time - self.start_time),2))
 		stdscr.clear()
 		stdscr.refresh()
 		for i in range(0, 20):
