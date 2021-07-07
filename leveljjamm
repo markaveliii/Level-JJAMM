@@ -34,21 +34,9 @@ if __name__ == "__main__":
 
     fileNum = 0
     for fi in inFile:
-
-        # tileArr, objArr, maxY, maxX = loadMap(inFile[fileNum])
         mapObj.loadMap(inFile[fileNum])
         mapObj.displayMap()
         fileNum += 1
 
-        #print('maxY: ', mapObj.maxY)
-        #print('maxX: ', mapObj.maxX)
-        #print('winCond: ', mapObj.winCond)
-        # print(tileArr)
-        # print(objArr)
-
-        #printTileLets(tileArr, maxY, maxX)
-        #mapObj.printTileLets()
-        # print()
-        #printObjLets(objArr, maxY, maxX)
-        #mapObj.printObjLets()
-        # curses.wrapper(mapObj.displayMap)
+        # print('maxY: ', mapObj.maxY, '\nmaxX: ', mapObj.maxX) # This was a test,
+        # proves that we don't need a getter, we can reference class objects directly
