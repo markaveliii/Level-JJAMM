@@ -3,17 +3,17 @@ from curses import wrapper
 #import os
 
 class Map:
-    tileArr = []
+    initArr = []
     objArr = []
     maxY = 0
     maxX = 0
     winCond = 'L'
     
-    def printTileLets(self):
+    def printInitLets(self):
         for y in range(self.maxX):
             #print(y)
             for x in range(self.maxY):
-                print(self.tileArr[y][x], end = '')
+                print(self.initArr[y][x], end = '')
             print()
 
     def printObjLets(self):
@@ -34,7 +34,7 @@ class Map:
             else:
                 break
         self.maxX += 1
-        self.tileArr = [[0 for y in range(self.maxY+1)] for x in range(self.maxX)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
+        self.initArr = [[0 for y in range(self.maxY+1)] for x in range(self.maxX)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
         self.objArr = [[0 for y in range(self.maxY+1)] for x in range(self.maxX)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
         y = 0
         x = 0
@@ -43,16 +43,7 @@ class Map:
             x = 0
             if line != '\n':
                 for character in line:
-                    self.tileArr[y][x] = character
-                    x += 1
-                y += 1
-            else:
-                break
-        y = 0
-        for line in curFile:
-            x = 0
-            if line != '\n':
-                for character in line:
+                    self.initArr[y][x] = character
                     self.objArr[y][x] = character
                     x += 1
                 y += 1
@@ -63,6 +54,19 @@ class Map:
             for character in line:
                 if character != '\n':
                     self.winCond = character
+        '''
+        y = 0
+        for line in curFile:
+            x = 0
+            if line != '\n':
+                for character in line:
+                    self.objArr[y][x] = character
+                    x += 1
+                y += 1
+            else:
+                break
+        '''
+
 
 
     def mapSwitch(self, obj):
@@ -118,6 +122,7 @@ class Map:
                 symbol, color = self.mapSwitch(self.objArr[y][x])
                 stdscr.addstr(y, x, symbol, curses.color_pair(color))
         while True:
+            stdscr.addstr(self.maxX+1, 0, "Enter 'q' to exit", curses.color_pair(1))
             c = stdscr.getch()
             if c == ord('q'):
                 break

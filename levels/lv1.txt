@@ -19,25 +19,4 @@ w-----wwwwwwwwwwwww----------w
 w----------------------------w
 wwwwwwwwwwwwwwwwwwwwwwwwwwweee
 
-wwwwwwwwwwLEVELwONEwwwwwwwwwww
--------------wwwwwwwwww------w
-------wwwwwwwwwww------------w
----wwwwwwwwww----------------w
--wwwwwwwwww------------------w
-wwwwwwwwwwwww------1---------w
-wwwwwwwwwwww-----------------w
-wwwwwwwwwww------------------w
-wwwwwwwwww-------------------w
-wwwwwwwwww----1--------------w
-w-------w----------w---------w
-w------w-----p----w----------w
-w-----w----------w-----------w
-w-----w-----------w------1---w
-w-----w------------w---------w
-w-----w-----ww-----w---------w
-w-----w----wwww----w---------w
-w-----wwwwwwwwwwwww----------w
-w----------------------------w
-wwwwwwwwwwwwwwwwwwwwwwwwwwweee
-
 T
