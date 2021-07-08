@@ -29,10 +29,13 @@ if __name__ == "__main__":
 
     fileNum = 0
     mapObj.setupMap()
+    menuObj = menu.Menu()
     for fi in inFile:
         playerY, playerX = mapObj.loadMap(inFile[fileNum])
         playObj = player.Player(playerY, playerX)
         mapObj.displayMap()
+        menuObj.display_menu(mapObj.maxX+2)
+        # mapObj.displayMap()
         mapObj.stdscr.addstr(mapObj.maxX+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
         while True:
             # Here we can call a gameplay function, which will
