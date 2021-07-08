@@ -11,32 +11,32 @@ class Map:
     # stdscr
     
     def printInitLets(self):
-        for y in range(self.maxX):
+        for y in range(self.maxY):
             #print(y)
-            for x in range(self.maxY):
+            for x in range(self.maxX):
                 print(self.initArr[y][x], end = '')
             print()
 
     def printObjLets(self):
-        for y in range(self.maxX):
+        for y in range(self.maxY):
             #print(y)
-            for x in range(self.maxY):
+            for x in range(self.maxX):
                 print(self.objArr[y][x], end = '')
             print()
 
 
     def loadMap(self, inFile):
         curFile = open(inFile, 'r')
-        self.maxY = len(curFile.readline()) - 1
-        self.maxX = 0
+        self.maxX = len(curFile.readline()) - 1
+        self.maxY = 0
         for line in curFile:
             if line != '\n':
-                self.maxX += 1
+                self.maxY += 1
             else:
                 break
-        self.maxX += 1
-        self.initArr = [[0 for y in range(self.maxY+1)] for x in range(self.maxX)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
-        self.objArr = [[0 for y in range(self.maxY+1)] for x in range(self.maxX)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
+        self.maxY += 1
+        self.initArr = [[0 for y in range(self.maxX+1)] for x in range(self.maxY)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
+        self.objArr = [[0 for y in range(self.maxX+1)] for x in range(self.maxY)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
         y = 0
         x = 0
         curFile.seek(0) # https://www.tutorialspoint.com/How-to-use-seek-method-to-reset-a-file-read-write-position-in-Python
@@ -123,8 +123,8 @@ class Map:
         curses.init_pair(7, curses.COLOR_WHITE, curses.COLOR_BLACK)
 
     def displayMap(self):
-        for y in range(self.maxX):
-            for x in range(self.maxY):
+        for y in range(self.maxY):
+            for x in range(self.maxX):
                 symbol, color = self.mapSwitch(self.objArr[y][x])
                 self.stdscr.addstr(y, x, symbol, curses.color_pair(color))
 
