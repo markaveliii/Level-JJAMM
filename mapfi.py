@@ -8,6 +8,7 @@ class Map:
     maxY = 0
     maxX = 0
     winCond = 'L'
+    # stdscr
     
     def printInitLets(self):
         for y in range(self.maxX):
@@ -45,6 +46,9 @@ class Map:
                 for character in line:
                     self.initArr[y][x] = character
                     self.objArr[y][x] = character
+                    if character == 'p':
+                        yPos = y
+                        xPos = x
                     x += 1
                 y += 1
             else:
@@ -54,6 +58,7 @@ class Map:
             for character in line:
                 if character != '\n':
                     self.winCond = character
+        return yPos, xPos
         '''
         y = 0
         for line in curFile:
@@ -97,11 +102,11 @@ class Map:
             return ' ', 4
 
 
-    def displayMap(self):
-        stdscr = curses.initscr()
+    def setupMap(self):
+        self.stdscr = curses.initscr()
         curses.noecho()
         curses.cbreak()
-        stdscr.keypad(True)
+        self.stdscr.keypad(True)
 
         winY = curses.LINES - 1
         winX = curses.COLS - 1
@@ -117,23 +122,11 @@ class Map:
         curses.init_pair(6, curses.COLOR_BLACK, curses.COLOR_CYAN)
         curses.init_pair(7, curses.COLOR_RED, curses.COLOR_BLACK)
 
+    def displayMap(self):
         for y in range(self.maxX):
             for x in range(self.maxY):
                 symbol, color = self.mapSwitch(self.objArr[y][x])
-                stdscr.addstr(y, x, symbol, curses.color_pair(color))
-        while True:
-            stdscr.addstr(self.maxX+1, 0, "Enter 'q' to exit", curses.color_pair(1))
-            c = stdscr.getch()
-            if c == ord('q'):
-                break
-
-        stdscr.clear()
-        stdscr.refresh()
-
-        curses.nocbreak()
-        stdscr.keypad(False)
-        curses.echo()
-        curses.endwin()
+                self.stdscr.addstr(y, x, symbol, curses.color_pair(color))
 
         '''
         switch (self.objArr[y][x]){
