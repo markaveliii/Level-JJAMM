@@ -33,7 +33,7 @@ if __name__ == "__main__":
         playerY, playerX = mapObj.loadMap(inFile[fileNum])
         playObj = player.Player(playerY, playerX)
         mapObj.displayMap()
-        mapObj.stdscr.addstr(mapObj.maxX+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(1))
+        mapObj.stdscr.addstr(mapObj.maxX+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
         while True:
             # Here we can call a gameplay function, which will
             # take in user input and decide what to do based
