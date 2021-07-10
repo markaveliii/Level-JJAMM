@@ -18,19 +18,29 @@ class Player:
         self.inventory.append('sword')
 
     #moves players x,y position on map
-    def move(self, keystroke, map):
+    def move(self, keystroke, mapObj):
         if keystroke == 'w':
             if self.y_pos-1 <= 0:
-                return
-            if map[self.x_pos][self.y_pos-1] == 'w':
                 return
             else:
                 self.y_pos -= 1
 
         elif keystroke == 'a':
-            self.x_pos -=1
-        elif keystroke == 's':
-            self.y_pos += 1
-        elif keystroke == 'd':
-            self.x_pos += 1
+            if self.x_pos-1 <= 0:
+                return
+            else:
+                self.x_pos -=1
 
+        elif keystroke == 's':
+            if self.y_pos+1 >= mapObj.maxY:
+                return
+            else:
+                self.y_pos += 1
+
+        elif keystroke == 'd':
+            if self.x_pos+1 >= mapObj.maxX:
+                return
+            else:
+                self.x_pos += 1
+
+            mapObj.displayMap()

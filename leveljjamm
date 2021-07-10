@@ -44,6 +44,20 @@ if __name__ == "__main__":
             c = mapObj.stdscr.getch()
             if c == ord('q') or c == ord('n'):
                 break
+
+            elif c == ord('w'):
+                playObj.move('w', mapObj)
+
+            elif c == ord('a'):
+                playObj.move('a', mapObj)
+            
+            elif c == ord('s'):
+                playObj.move('s', mapObj)
+
+            elif c == ord('d'):
+                playObj.move('d', mapObj)
+            print("x: ", playObj.x_pos, "y: ", playObj.y_pos)
+
         if c == ord('q'):
             mapObj.stdscr.clear()
             mapObj.stdscr.refresh()
