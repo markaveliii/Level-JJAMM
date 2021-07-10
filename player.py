@@ -23,7 +23,9 @@ class Player:
             if self.y_pos-1 <= 0:
                 return
             dest = mapObj.objArr[self.y_pos-1][self.x_pos]
-            if dest == '-':
+            if dest == 'w' or dest.isupper():
+                return
+            else:
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.y_pos -= 1
                 mapObj.objArr[self.y_pos][self.x_pos] = 'p'
@@ -32,7 +34,9 @@ class Player:
             if self.x_pos-1 <= 0:
                 return
             dest = mapObj.objArr[self.y_pos][self.x_pos-1]
-            if dest == '-':
+            if dest == 'w' or dest.isupper():
+                return
+            else:
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.x_pos -= 1
                 mapObj.objArr[self.y_pos][self.x_pos] = 'p'
@@ -42,7 +46,9 @@ class Player:
             if self.y_pos+1 >= mapObj.maxY:
                 return
             dest = mapObj.objArr[self.y_pos+1][self.x_pos]
-            if dest == '-':
+            if dest == 'w' or dest.isupper():
+                return
+            else:
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.y_pos += 1
                 mapObj.objArr[self.y_pos][self.x_pos] = 'p'
@@ -52,7 +58,9 @@ class Player:
             if self.x_pos+1 >= mapObj.maxX:
                 return
             dest = mapObj.objArr[self.y_pos][self.x_pos+1]
-            if dest == '-':
+            if dest == 'w' or dest.isupper():
+                return
+            else:
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.x_pos += 1
                 mapObj.objArr[self.y_pos][self.x_pos] = 'p'
