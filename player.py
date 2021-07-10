@@ -22,25 +22,40 @@ class Player:
         if keystroke == 'w':
             if self.y_pos-1 <= 0:
                 return
-            else:
+            dest = mapObj.objArr[self.y_pos-1][self.x_pos]
+            if dest == '-':
+                mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.y_pos -= 1
+                mapObj.objArr[self.y_pos][self.x_pos] = 'p'
 
         elif keystroke == 'a':
             if self.x_pos-1 <= 0:
                 return
-            else:
-                self.x_pos -=1
+            dest = mapObj.objArr[self.y_pos][self.x_pos-1]
+            if dest == '-':
+                mapObj.objArr[self.y_pos][self.x_pos] = '-'
+                self.x_pos -= 1
+                mapObj.objArr[self.y_pos][self.x_pos] = 'p'
+
 
         elif keystroke == 's':
             if self.y_pos+1 >= mapObj.maxY:
                 return
-            else:
+            dest = mapObj.objArr[self.y_pos+1][self.x_pos]
+            if dest == '-':
+                mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.y_pos += 1
+                mapObj.objArr[self.y_pos][self.x_pos] = 'p'
+
 
         elif keystroke == 'd':
             if self.x_pos+1 >= mapObj.maxX:
                 return
-            else:
+            dest = mapObj.objArr[self.y_pos][self.x_pos+1]
+            if dest == '-':
+                mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.x_pos += 1
+                mapObj.objArr[self.y_pos][self.x_pos] = 'p'
 
-            mapObj.displayMap()
+
+        mapObj.displayMap()

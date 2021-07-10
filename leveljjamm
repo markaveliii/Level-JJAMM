@@ -56,7 +56,8 @@ if __name__ == "__main__":
 
             elif c == ord('d'):
                 playObj.move('d', mapObj)
-            print("x: ", playObj.x_pos, "y: ", playObj.y_pos)
+            
+            #print("x: ", playObj.x_pos, "y: ", playObj.y_pos) test to see if map bounds weren't violated.
 
         if c == ord('q'):
             mapObj.stdscr.clear()
