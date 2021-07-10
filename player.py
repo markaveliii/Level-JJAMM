@@ -17,50 +17,104 @@ class Player:
     def set_sword(self):
         self.inventory.append('sword')
 
-    #moves players x,y position on map
+    #check for enemy in destination cell
+    def enemy_there(self, dest):
+        if dest == '1' or dest == '2' or dest == '3' or dest == '4':
+            # print('you died')
+            return True
+        else:
+            return False
+
+    #check for item in destination cell
+    def item_there(self, dest):
+        if dest == 's':
+            self.set_sword()
+            return True
+        if dest == 'b':
+            return True
+        else:
+            return False
+
     def move(self, keystroke, mapObj):
+        # moving up
         if keystroke == 'w':
+            #check for out of bounds movement
             if self.y_pos-1 <= 0:
                 return
+
+            #sets destination cell for processing
             dest = mapObj.objArr[self.y_pos-1][self.x_pos]
             if dest == 'w' or dest.isupper():
                 return
             else:
+                if self.enemy_there(dest):
+                    print('You died')
+                if self.item_there(dest):
+                    print('You picked up the item!')
+
+                #updates objArr for map
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.y_pos -= 1
                 mapObj.objArr[self.y_pos][self.x_pos] = 'p'
-
+        #moving left
         elif keystroke == 'a':
+            #check for out of bounds movement
             if self.x_pos-1 <= 0:
                 return
+            
+            #sets destination cell for processing
             dest = mapObj.objArr[self.y_pos][self.x_pos-1]
             if dest == 'w' or dest.isupper():
                 return
             else:
+                if self.enemy_there(dest):
+                    print('You died')
+                if self.item_there(dest):
+                    print('You picked up the item!')
+
+                #updates objArr for map
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.x_pos -= 1
                 mapObj.objArr[self.y_pos][self.x_pos] = 'p'
 
-
+        # moving down
         elif keystroke == 's':
+            #check for out of bounds movement
             if self.y_pos+1 >= mapObj.maxY:
                 return
+            
+            #sets destination cell for processing
             dest = mapObj.objArr[self.y_pos+1][self.x_pos]
             if dest == 'w' or dest.isupper():
                 return
             else:
+                if self.enemy_there(dest):
+                    print('You died')
+                if self.item_there(dest):
+                    print('You picked up the item!')
+
+                #updates objArr for map
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.y_pos += 1
                 mapObj.objArr[self.y_pos][self.x_pos] = 'p'
 
-
+        #moving right
         elif keystroke == 'd':
+            #check for out of bounds movement
             if self.x_pos+1 >= mapObj.maxX:
                 return
+            
+            #sets destination cell for processing
             dest = mapObj.objArr[self.y_pos][self.x_pos+1]
             if dest == 'w' or dest.isupper():
                 return
             else:
+                if self.enemy_there(dest):
+                    print('You died')
+                if self.item_there(dest):
+                    print('You picked up the item!')
+
+                #updates objArr for map
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.x_pos += 1
                 mapObj.objArr[self.y_pos][self.x_pos] = 'p'
