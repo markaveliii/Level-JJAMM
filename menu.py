@@ -25,8 +25,8 @@ class Menu:
             livesNum = 3;
             lives = "Lives: " + str(livesNum)
             title = "Menu:"
-            current_time = round(time.time(),2)
-            time_elapsed = "Time Elapsed: " + str(round((current_time - self.start_time),2))
+            current_time = round(time.time(), 2)
+            time_elapsed = "Time Elapsed: " + str(round((current_time - self.start_time), 2))
             stdscr.refresh()
             for i in range(0, 25):        #printing horizontal border
                     stdscr.addch(begin_y,begin_x+i, "*", curses.color_pair(9)) 
@@ -38,3 +38,7 @@ class Menu:
             stdscr.addstr(begin_y+3, begin_x+1, lives, curses.color_pair(10))
             stdscr.addstr(begin_y+4, begin_x+1, time_elapsed, curses.color_pair(10))
             pass
+
+    def get_time():                      #Helper function to return elapsed time for level
+            current_time = round(time.time(), 2)
+            return round((current_time - self.start_time), 2)
