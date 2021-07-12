@@ -9,6 +9,39 @@ import mapfi
 import creature
 import menu
 import player
+import time #found sleep function at https://www.tutorialspoint.com/python3/time_sleep.htm
+
+def use_weapon(c, playObj, mapObj):
+    if playObj.get_sword() == False:
+        #display 'no sword' message in menu
+        return
+    if c == curses.KEY_LEFT:
+        if playObj.x_pos > 0:
+            if mapObj.objArr[playObj.y_pos][playObj.x_pos - 1] == '1':
+                #mapObj.objArr[playObj.y_pos][playObj.x_pos - 1] = 's'
+                #mapObj.displayMap()
+                #time.sleep(0.5)
+                mapObj.objArr[playObj.y_pos][playObj.x_pos - 1] = '-'
+                mapObj.displayMap()
+    if c == curses.KEY_RIGHT:
+        if playObj.x_pos < mapObj.maxX - 1:
+            if mapObj.objArr[playObj.y_pos][playObj.x_pos + 1] == '1':
+                #mapObj.objArr[playObj.y_pos][playObj.x_pos + 1] = 's'
+                #mapObj.displayMap()
+                #time.sleep(0.5)
+                mapObj.objArr[playObj.y_pos][playObj.x_pos + 1] = '-'
+                mapObj.displayMap()
+    if c == curses.KEY_UP:
+        if playObj.y_pos < mapObj.maxY - 1:
+            if mapObj.objArr[playObj.y_pos - 1][playObj.x_pos] == '1':
+                mapObj.objArr[playObj.y_pos - 1][playObj.x_pos] = '-'
+                mapObj.displayMap()
+    if c == curses.KEY_DOWN:
+        if playObj.y_pos > 0:
+            if mapObj.objArr[playObj.y_pos + 1][playObj.x_pos] == '1':
+                mapObj.objArr[playObj.y_pos + 1][playObj.x_pos] = '-'
+                mapObj.displayMap()
+
 
 
 if __name__ == "__main__":
@@ -56,6 +89,8 @@ if __name__ == "__main__":
 
             elif c == ord('d'):
                 playObj.move('d', mapObj)
+            elif c == curses.KEY_LEFT or c == curses.KEY_RIGHT or c == curses.KEY_UP or c == curses.KEY_DOWN:
+                use_weapon(c, playObj, mapObj)
 
             menuObj.display_menu(mapObj.maxX+2)
             
