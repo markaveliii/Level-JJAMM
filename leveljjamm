@@ -76,6 +76,7 @@ if __name__ == "__main__":
     for fi in inFile:
         playerY, playerX = mapObj.loadMap(inFile[fileNum])
         playObj = player.Player(playerY, playerX)
+        playObj.debugMode() # DEBUG, remove before release
         mapObj.displayMap()
         menuObj.display_menu(mapObj.maxX+2)
         # mapObj.displayMap()
