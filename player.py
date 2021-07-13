@@ -1,3 +1,5 @@
+import time #found sleep function at https://www.tutorialspoint.com/python3/time_sleep.htm
+
 class Player:
     inventory = []
 
@@ -30,7 +32,9 @@ class Player:
         if dest == 's':
             self.set_sword()
             return True
-        if dest == 'b':
+        elif dest == 'b':
+            return True
+        elif dest == 'k': # TODO: This will need to set key
             return True
         else:
             return False
@@ -49,8 +53,23 @@ class Player:
             else:
                 if self.enemy_there(dest):
                     print('You died')
+                    mapObj.objArr[self.y_pos-1][self.x_pos] = 'd'
+                    mapObj.displayMap()
+                    mapObj.stdscr.refresh()
+                    time.sleep(1)
+                    mapObj.reset(self)
+                    return
                 if self.item_there(dest):
                     print('You picked up the item!')
+                if dest == 'e':
+                    if mapObj.winCheck():
+                        mapObj.objArr[self.y_pos][self.x_pos] = '-'
+                        self.y_pos -= 1
+                        mapObj.objArr[self.y_pos][self.x_pos] = 'p'
+                        mapObj.displayMap()
+                        mapObj.stdscr.refresh()
+                        time.sleep(1)
+                        return True
 
                 #updates objArr for map
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
@@ -69,8 +88,23 @@ class Player:
             else:
                 if self.enemy_there(dest):
                     print('You died')
+                    mapObj.objArr[self.y_pos][self.x_pos-1] = 'd'
+                    mapObj.displayMap()
+                    mapObj.stdscr.refresh()
+                    time.sleep(1)
+                    mapObj.reset(self)
+                    return
                 if self.item_there(dest):
                     print('You picked up the item!')
+                if dest == 'e':
+                    if mapObj.winCheck():
+                        mapObj.objArr[self.y_pos][self.x_pos] = '-'
+                        self.x_pos -= 1
+                        mapObj.objArr[self.y_pos][self.x_pos] = 'p'
+                        mapObj.displayMap()
+                        mapObj.stdscr.refresh()
+                        time.sleep(1)
+                        return True
 
                 #updates objArr for map
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
@@ -90,8 +124,23 @@ class Player:
             else:
                 if self.enemy_there(dest):
                     print('You died')
+                    mapObj.objArr[self.y_pos+1][self.x_pos] = 'd'
+                    mapObj.displayMap()
+                    mapObj.stdscr.refresh()
+                    time.sleep(1)
+                    mapObj.reset(self)
+                    return
                 if self.item_there(dest):
                     print('You picked up the item!')
+                if dest == 'e':
+                    if mapObj.winCheck():
+                        mapObj.objArr[self.y_pos][self.x_pos] = '-'
+                        self.y_pos += 1
+                        mapObj.objArr[self.y_pos][self.x_pos] = 'p'
+                        mapObj.displayMap()
+                        mapObj.stdscr.refresh()
+                        time.sleep(1)
+                        return True
 
                 #updates objArr for map
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
@@ -111,13 +160,28 @@ class Player:
             else:
                 if self.enemy_there(dest):
                     print('You died')
+                    mapObj.objArr[self.y_pos][self.x_pos+1] = 'd'
+                    mapObj.displayMap()
+                    mapObj.stdscr.refresh()
+                    time.sleep(1)
+                    mapObj.reset(self)
+                    return
                 if self.item_there(dest):
                     print('You picked up the item!')
+                if dest == 'e':
+                    if mapObj.winCheck():
+                        mapObj.objArr[self.y_pos][self.x_pos] = '-'
+                        self.x_pos += 1
+                        mapObj.objArr[self.y_pos][self.x_pos+1] = 'p'
+                        mapObj.displayMap()
+                        mapObj.stdscr.refresh()
+                        time.sleep(1)
+                        return True
+                        
 
                 #updates objArr for map
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.x_pos += 1
                 mapObj.objArr[self.y_pos][self.x_pos] = 'p'
-
 
         mapObj.displayMap()

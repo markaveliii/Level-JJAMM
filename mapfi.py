@@ -133,6 +133,9 @@ class Map:
         elif obj == 'w':
             return ' ', 7
 
+        elif obj == 'd':
+            return 'X', 8
+
         else:
             return ' ', 4
 
@@ -148,7 +151,7 @@ class Map:
 
         win = curses.newwin(winY, winX, 0, 0)
         curses.start_color()
-        # curses.init_pair(0, curses.COLOR_BLACK, curses.COLOR_BLACK)
+        curses.init_pair(8, curses.COLOR_RED, curses.COLOR_GREEN)
         curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_RED)
         curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_GREEN)
         curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_YELLOW)
@@ -162,6 +165,33 @@ class Map:
             for x in range(self.maxX):
                 symbol, color = self.mapSwitch(self.objArr[y][x])
                 self.stdscr.addstr(y, x, symbol, curses.color_pair(color))
+
+    def reset(self, playObj):
+        for y in range(self.maxY):
+            for x in range(self.maxX):
+                if self.initArr[y][x] == 'p':
+                    playObj.y_pos = y
+                    playObj.x_pos = x
+                self.objArr[y][x] = self.initArr[y][x]
+        # if self.winCond == 'S':
+            # remove sword from player's inventory
+        # if self.winCond == 'B':
+            # remove bow from player's inventory
+        self.displayMap()
+
+    def winCheck(self):
+        if self.winCond == 'T':
+            return True
+        elif self.winCond == 'E': 
+            # check if all enemies defeated
+            for y in range(self.maxY):
+                for x in range(self.maxX):
+                    if self.objArr[y][x].isnumeric():
+                        return False
+            return True
+        # elif self.winCond == 'S':
+            # check if sword in player's inventory
+
 
     def game(self, creature, player, menu):
         print('temp')
