@@ -8,6 +8,12 @@ class Player:
         self.y_pos = y_pos
         self.sword = False
         self.bow = False
+        self.debug = False
+        self.key = 0
+        self.lives = 3
+
+    def debugMode(self):
+        self.debug = True
 
     #check inventory for sword
     def get_sword(self):
