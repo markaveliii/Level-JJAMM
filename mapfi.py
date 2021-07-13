@@ -1,5 +1,6 @@
 import curses
 from curses import wrapper
+import creature.py
 #import os
 
 class Map:
@@ -72,7 +73,41 @@ class Map:
                 break
         '''
 
-
+    #Jerry wrote loadEnemy which is a modified loadMap
+    def loadEnemy(self, inFile):
+        curFile = open(inFile, 'r')
+        self.maxX = len(curFile.readline()) - 1
+        self.maxY = 0
+        for line in curFile:
+            if line != '\n':
+                self.maxY += 1
+            else:
+                break
+        self.maxY += 1
+        self.initArr = [[0 for y in range(self.maxX+1)] for x in range(self.maxY)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
+        self.objArr = [[0 for y in range(self.maxX+1)] for x in range(self.maxY)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
+        y = 0
+        x = 0
+        enemies = []
+        curFile.seek(0) # https://www.tutorialspoint.com/How-to-use-seek-method-to-reset-a-file-read-write-position-in-Python
+        for line in curFile:
+            x = 0
+            if line != '\n':
+                for character in line:
+                    self.initArr[y][x] = character
+                    self.objArr[y][x] = character
+                    try:
+                        character = int(character)
+                    except ValueError:
+                        character = 0
+                    if(character != 0)
+                        enemy = creature.creature(character, x, y)
+                        enemies.append(enemy)
+                    x += 1
+                y += 1
+            else:
+                break
+        return enemies
 
     def mapSwitch(self, obj):
         if obj.isupper():
