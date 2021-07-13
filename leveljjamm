@@ -18,28 +18,38 @@ def use_weapon(c, playObj, mapObj):
     if c == curses.KEY_LEFT:
         if playObj.x_pos > 0:
             if mapObj.objArr[playObj.y_pos][playObj.x_pos - 1] == '1':
-                #mapObj.objArr[playObj.y_pos][playObj.x_pos - 1] = 's'
-                #mapObj.displayMap()
-                #time.sleep(0.5)
+                mapObj.objArr[playObj.y_pos][playObj.x_pos - 1] = 's'
+                mapObj.displayMap()
                 mapObj.objArr[playObj.y_pos][playObj.x_pos - 1] = '-'
+                mapObj.stdscr.refresh()
+                time.sleep(0.5)
                 mapObj.displayMap()
     if c == curses.KEY_RIGHT:
         if playObj.x_pos < mapObj.maxX - 1:
             if mapObj.objArr[playObj.y_pos][playObj.x_pos + 1] == '1':
-                #mapObj.objArr[playObj.y_pos][playObj.x_pos + 1] = 's'
-                #mapObj.displayMap()
-                #time.sleep(0.5)
+                mapObj.objArr[playObj.y_pos][playObj.x_pos + 1] = 's'
+                mapObj.displayMap()
                 mapObj.objArr[playObj.y_pos][playObj.x_pos + 1] = '-'
+                mapObj.stdscr.refresh()
+                time.sleep(0.5)
                 mapObj.displayMap()
     if c == curses.KEY_UP:
         if playObj.y_pos < mapObj.maxY - 1:
             if mapObj.objArr[playObj.y_pos - 1][playObj.x_pos] == '1':
+                mapObj.objArr[playObj.y_pos - 1][playObj.x_pos] = 's'
+                mapObj.displayMap()
                 mapObj.objArr[playObj.y_pos - 1][playObj.x_pos] = '-'
+                mapObj.stdscr.refresh()
+                time.sleep(0.5)
                 mapObj.displayMap()
     if c == curses.KEY_DOWN:
         if playObj.y_pos > 0:
             if mapObj.objArr[playObj.y_pos + 1][playObj.x_pos] == '1':
+                mapObj.objArr[playObj.y_pos + 1][playObj.x_pos] = 's'
+                mapObj.displayMap()
                 mapObj.objArr[playObj.y_pos + 1][playObj.x_pos] = '-'
+                mapObj.stdscr.refresh()
+                time.sleep(0.5)
                 mapObj.displayMap()
 
 
@@ -70,6 +80,7 @@ if __name__ == "__main__":
         menuObj.display_menu(mapObj.maxX+2)
         # mapObj.displayMap()
         mapObj.stdscr.addstr(mapObj.maxX+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
+        win = False
         while True:
             # Here we can call a gameplay function, which will
             # take in user input and decide what to do based
@@ -79,20 +90,23 @@ if __name__ == "__main__":
                 break
 
             elif c == ord('w'):
-                playObj.move('w', mapObj)
+                win = playObj.move('w', mapObj)
 
             elif c == ord('a'):
-                playObj.move('a', mapObj)
+                win = playObj.move('a', mapObj)
             
             elif c == ord('s'):
-                playObj.move('s', mapObj)
+                win = playObj.move('s', mapObj)
 
             elif c == ord('d'):
-                playObj.move('d', mapObj)
+                win = playObj.move('d', mapObj)
             elif c == curses.KEY_LEFT or c == curses.KEY_RIGHT or c == curses.KEY_UP or c == curses.KEY_DOWN:
                 use_weapon(c, playObj, mapObj)
 
             menuObj.display_menu(mapObj.maxX+2)
+            if win:
+                win = False
+                break
             
             #print("x: ", playObj.x_pos, "y: ", playObj.y_pos) test to see if map bounds weren't violated.
 
