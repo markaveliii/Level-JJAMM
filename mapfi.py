@@ -1,6 +1,6 @@
 import curses
 from curses import wrapper
-import creature.py
+import creature
 #import os
 
 class Map:
@@ -100,7 +100,7 @@ class Map:
                         character = int(character)
                     except ValueError:
                         character = 0
-                    if(character != 0)
+                    if character != 0:
                         enemy = creature.creature(character, x, y)
                         enemies.append(enemy)
                     x += 1

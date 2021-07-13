@@ -6,18 +6,16 @@ class Player:
     def __init__(self, y_pos, x_pos):
         self.x_pos = x_pos
         self.y_pos = y_pos
+        self.sword = False
+        self.bow = False
 
     #check inventory for sword
     def get_sword(self):
-        found = False
-        for item in self.inventory:
-            if item == 'sword':
-                found = True
-        return found
+        return self.sword
 
     #insert sword into inventory
     def set_sword(self):
-        self.inventory.append('sword')
+        self.sword = True
 
     #check for enemy in destination cell
     def enemy_there(self, dest):
