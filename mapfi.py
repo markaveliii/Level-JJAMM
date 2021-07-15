@@ -167,19 +167,25 @@ class Map:
                 self.stdscr.addstr(y, x, symbol, curses.color_pair(color))
 
     def reset(self, playObj):
+        resKey = 0
         for y in range(self.maxY):
             for x in range(self.maxX):
                 if self.initArr[y][x] == 'p':
                     playObj.y_pos = y
                     playObj.x_pos = x
+                if self.initArr[y][x] == 'k' and self.objArr[y][x] != 'k':
+                    resKey += 1
                 self.objArr[y][x] = self.initArr[y][x]
-        # if self.winCond == 'S':
-            # remove sword from player's inventory
-        # if self.winCond == 'B':
-            # remove bow from player's inventory
+        if self.winCond == 'S':
+            playObj.sword = False
+        elif self.winCond == 'B':
+            playObj.bow = False
+        elif self.winCond == 'K':
+            playObj.key -= resKey
+
         self.displayMap()
 
-    def winCheck(self):
+    def winCheck(self, playObj):
         if self.winCond == 'T':
             return True
         elif self.winCond == 'E': 
@@ -189,8 +195,14 @@ class Map:
                     if self.objArr[y][x].isnumeric():
                         return False
             return True
-        # elif self.winCond == 'S':
-            # check if sword in player's inventory
+        elif self.winCond == 'S':
+            return playObj.sword
+        elif self.winCond == 'B':
+            return playObj.bow
+        elif self.winCond == 'K':
+            if playObj.key > 0:
+                playObj.key -= 1
+                return True
 
 
     def game(self, creature, player, menu):

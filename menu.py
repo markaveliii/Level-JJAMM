@@ -13,7 +13,7 @@ class Menu:
             self.start_time = round(time.time(),2)
             pass
 
-    def display_menu(self, begin_x):                #Displays menu border, time and lives
+    def display_menu(self, begin_x, playObj):                #Displays menu border, time and lives
             stdscr = curses.initscr()
             curses.start_color()
             curses.init_pair(9, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
@@ -37,6 +37,8 @@ class Menu:
             stdscr.addstr(begin_y+2, begin_x+1, title,curses.color_pair(10))   #printing title, lives, time
             stdscr.addstr(begin_y+3, begin_x+1, lives, curses.color_pair(10))
             stdscr.addstr(begin_y+4, begin_x+1, time_elapsed, curses.color_pair(10))
+            stdscr.addstr(begin_y+5, begin_x+1, 'keys: %s' %playObj.key, curses.color_pair(10))
+            #TODO: Add if else statements to display win condition
             pass
 
     def get_time():                      #Helper function to return elapsed time for level
