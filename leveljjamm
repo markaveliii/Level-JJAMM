@@ -57,7 +57,7 @@ def use_weapon(c, playObj, mapObj):
 if __name__ == "__main__":
 
     # path = input('input the directory name: ')
-    path = 'levels' # Temporary, for testing
+    path = 'tutorials' # Temporary, for testing
     path = './' + path
     mapObj = mapfi.Map()
     inFile = []
@@ -73,14 +73,16 @@ if __name__ == "__main__":
     fileNum = 0
     mapObj.setupMap()
     menuObj = menu.Menu()
+    playObj = player.Player()
     for fi in inFile:
         playerY, playerX = mapObj.loadMap(inFile[fileNum])
-        playObj = player.Player(playerY, playerX)
+        playObj.y_pos = playerY
+        playObj.x_pos = playerX
         playObj.debugMode() # DEBUG, remove before release
         mapObj.displayMap()
-        menuObj.display_menu(mapObj.maxX+2)
+        menuObj.display_menu(mapObj.maxX+2, playObj)
         # mapObj.displayMap()
-        mapObj.stdscr.addstr(mapObj.maxX+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
+        mapObj.stdscr.addstr(mapObj.maxY+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
         win = False
         while True:
             # Here we can call a gameplay function, which will
@@ -101,10 +103,16 @@ if __name__ == "__main__":
 
             elif c == ord('d'):
                 win = playObj.move('d', mapObj)
+
             elif c == curses.KEY_LEFT or c == curses.KEY_RIGHT or c == curses.KEY_UP or c == curses.KEY_DOWN:
                 use_weapon(c, playObj, mapObj)
 
-            menuObj.display_menu(mapObj.maxX+2)
+            elif c == ord('r'):
+                mapObj.reset(playObj)
+
+            menuObj.display_menu(mapObj.maxX+2, playObj)
+            # https://stackoverflow.com/questions/2259228/how-are-booleans-formatted-in-strings-in-python
+            # mapObj.stdscr.addstr(mapObj.maxY+2, 0, '%s' % (playObj.sword), curses.color_pair(7)) 
             if win:
                 win = False
                 break

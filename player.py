@@ -3,9 +3,9 @@ import time #found sleep function at https://www.tutorialspoint.com/python3/time
 class Player:
     inventory = []
 
-    def __init__(self, y_pos, x_pos):
-        self.x_pos = x_pos
-        self.y_pos = y_pos
+    def __init__(self):
+        self.x_pos = 0
+        self.y_pos = 0
         self.sword = False
         self.bow = False
         self.debug = False
@@ -37,8 +37,10 @@ class Player:
             self.set_sword()
             return True
         elif dest == 'b':
+            self.bow = True
             return True
-        elif dest == 'k': # TODO: This will need to set key
+        elif dest == 'k':
+            self.key += 1
             return True
         else:
             return False
@@ -75,33 +77,40 @@ class Player:
         dest = mapObj.objArr[desy][desx]
 
         if dest == 'w' or dest.isupper():
-            return
+             return
         elif self.enemy_there(dest):
             print('You died')
-            dest = 'd'
+            mapObj.objArr[desy][desx] = 'd'
             mapObj.displayMap()
             mapObj.stdscr.refresh()
             time.sleep(1)
             mapObj.reset(self)
+            mapObj.displayMap()
             return
         elif self.item_there(dest):
             print('You picked up the item!')
-            if dest == 'e':
-                if mapObj.winCheck():
-                    mapObj.objArr[self.y_pos][self.x_pos] = '-'
-                    self.x_pos = desx
-                    self.y_pos = desy
-                    dest = 'p'
-                    mapObj.displayMap()
-                    mapObj.stdscr.refresh()
-                    time.sleep(1)
-                    return True
+        elif dest == 'e':
+            if mapObj.winCheck(self):
+                mapObj.objArr[self.y_pos][self.x_pos] = '-'
+                self.x_pos = desx
+                self.y_pos = desy
+                dest = 'p'
+                mapObj.displayMap()
+                mapObj.stdscr.refresh()
+                time.sleep(1)
+                return True
+
+
                         
 
         #updates objArr for map
         mapObj.objArr[desy][desx] = 'p'
-        mapObj.objArr[self.y_pos][self.x_pos] = '-'
+        if not mapObj.initArr[self.y_pos][self.x_pos] == 'e':
+            mapObj.objArr[self.y_pos][self.x_pos] = '-'
+        else:
+            mapObj.objArr[self.y_pos][self.x_pos] = 'e'
         self.x_pos = desx
         self.y_pos = desy
+
 
         mapObj.displayMap()
