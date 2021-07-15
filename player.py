@@ -44,148 +44,64 @@ class Player:
             return False
 
     def move(self, keystroke, mapObj):
+        desx = 0
+        desy = 0
         # moving up
         if keystroke == 'w':
-            #check for out of bounds movement
-            if self.y_pos-1 <= 0:
-                return
+            desy = self.y_pos-1
+            desx = self.x_pos
 
-            #sets destination cell for processing
-            dest = mapObj.objArr[self.y_pos-1][self.x_pos]
-            if dest == 'w' or dest.isupper():
-                return
-            else:
-                if self.enemy_there(dest):
-                    print('You died')
-                    mapObj.objArr[self.y_pos-1][self.x_pos] = 'd'
-                    mapObj.displayMap()
-                    mapObj.stdscr.refresh()
-                    time.sleep(1)
-                    mapObj.reset(self)
-                    return
-                if self.item_there(dest):
-                    print('You picked up the item!')
-                if dest == 'e':
-                    if mapObj.winCheck():
-                        mapObj.objArr[self.y_pos][self.x_pos] = '-'
-                        self.y_pos -= 1
-                        mapObj.objArr[self.y_pos][self.x_pos] = 'p'
-                        mapObj.displayMap()
-                        mapObj.stdscr.refresh()
-                        time.sleep(1)
-                        return True
-
-                #updates objArr for map
-                mapObj.objArr[self.y_pos][self.x_pos] = '-'
-                self.y_pos -= 1
-                mapObj.objArr[self.y_pos][self.x_pos] = 'p'
         #moving left
         elif keystroke == 'a':
-            #check for out of bounds movement
-            if self.x_pos-1 <= 0:
-                return
-            
-            #sets destination cell for processing
-            dest = mapObj.objArr[self.y_pos][self.x_pos-1]
-            if dest == 'w' or dest.isupper():
-                return
-            else:
-                if self.enemy_there(dest):
-                    print('You died')
-                    mapObj.objArr[self.y_pos][self.x_pos-1] = 'd'
-                    mapObj.displayMap()
-                    mapObj.stdscr.refresh()
-                    time.sleep(1)
-                    mapObj.reset(self)
-                    return
-                if self.item_there(dest):
-                    print('You picked up the item!')
-                if dest == 'e':
-                    if mapObj.winCheck():
-                        mapObj.objArr[self.y_pos][self.x_pos] = '-'
-                        self.x_pos -= 1
-                        mapObj.objArr[self.y_pos][self.x_pos] = 'p'
-                        mapObj.displayMap()
-                        mapObj.stdscr.refresh()
-                        time.sleep(1)
-                        return True
-
-                #updates objArr for map
-                mapObj.objArr[self.y_pos][self.x_pos] = '-'
-                self.x_pos -= 1
-                mapObj.objArr[self.y_pos][self.x_pos] = 'p'
+            desy = self.y_pos
+            desx = self.x_pos-1
 
         # moving down
         elif keystroke == 's':
-            #check for out of bounds movement
-            if self.y_pos+1 >= mapObj.maxY:
-                return
-            
-            #sets destination cell for processing
-            dest = mapObj.objArr[self.y_pos+1][self.x_pos]
-            if dest == 'w' or dest.isupper():
-                return
-            else:
-                if self.enemy_there(dest):
-                    print('You died')
-                    mapObj.objArr[self.y_pos+1][self.x_pos] = 'd'
-                    mapObj.displayMap()
-                    mapObj.stdscr.refresh()
-                    time.sleep(1)
-                    mapObj.reset(self)
-                    return
-                if self.item_there(dest):
-                    print('You picked up the item!')
-                if dest == 'e':
-                    if mapObj.winCheck():
-                        mapObj.objArr[self.y_pos][self.x_pos] = '-'
-                        self.y_pos += 1
-                        mapObj.objArr[self.y_pos][self.x_pos] = 'p'
-                        mapObj.displayMap()
-                        mapObj.stdscr.refresh()
-                        time.sleep(1)
-                        return True
-
-                #updates objArr for map
-                mapObj.objArr[self.y_pos][self.x_pos] = '-'
-                self.y_pos += 1
-                mapObj.objArr[self.y_pos][self.x_pos] = 'p'
+            desy = self.y_pos+1
+            desx = self.x_pos
 
         #moving right
         elif keystroke == 'd':
-            #check for out of bounds movement
-            if self.x_pos+1 >= mapObj.maxX:
-                return
+            desy = self.y_pos
+            desx = self.x_pos+1
+
+        
+
+        #check for out of bounds movement
+        if desx >= mapObj.maxX or desx < 0 or desy >= mapObj.maxY or desy < 0:
+            return
             
-            #sets destination cell for processing
-            dest = mapObj.objArr[self.y_pos][self.x_pos+1]
-            if dest == 'w' or dest.isupper():
-                return
-            else:
-                if self.enemy_there(dest):
-                    print('You died')
-                    mapObj.objArr[self.y_pos][self.x_pos+1] = 'd'
+        dest = mapObj.objArr[desy][desx]
+
+        if dest == 'w' or dest.isupper():
+            return
+        elif self.enemy_there(dest):
+            print('You died')
+            dest = 'd'
+            mapObj.displayMap()
+            mapObj.stdscr.refresh()
+            time.sleep(1)
+            mapObj.reset(self)
+            return
+        elif self.item_there(dest):
+            print('You picked up the item!')
+            if dest == 'e':
+                if mapObj.winCheck():
+                    mapObj.objArr[self.y_pos][self.x_pos] = '-'
+                    self.x_pos = desx
+                    self.y_pos = desy
+                    dest = 'p'
                     mapObj.displayMap()
                     mapObj.stdscr.refresh()
                     time.sleep(1)
-                    mapObj.reset(self)
-                    return
-                if self.item_there(dest):
-                    print('You picked up the item!')
-                if dest == 'e':
-                    if mapObj.winCheck():
-                        mapObj.objArr[self.y_pos][self.x_pos] = '-'
-                        self.x_pos += 1
-                        mapObj.objArr[self.y_pos][self.x_pos+1] = 'p'
-                        mapObj.displayMap()
-                        mapObj.stdscr.refresh()
-                        time.sleep(1)
-                        return True
+                    return True
                         
 
-                #updates objArr for map
-                mapObj.objArr[self.y_pos][self.x_pos] = '-'
-                self.x_pos += 1
-                mapObj.objArr[self.y_pos][self.x_pos] = 'p'
+        #updates objArr for map
+        mapObj.objArr[desy][desx] = 'p'
+        mapObj.objArr[self.y_pos][self.x_pos] = '-'
+        self.x_pos = desx
+        self.y_pos = desy
 
         mapObj.displayMap()
