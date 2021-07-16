@@ -22,7 +22,7 @@ class Menu:
             height = 5
             width = 70
             win = curses.newwin(height, width, begin_y, begin_x+2)
-            livesNum = 3;
+            livesNum = playObj.lives;
             lives = "Lives: " + str(livesNum)
             title = "Menu:"
             current_time = round(time.time(), 2)
@@ -30,14 +30,19 @@ class Menu:
             stdscr.refresh()
             for i in range(0, 25):        #printing horizontal border
                     stdscr.addch(begin_y,begin_x+i, "*", curses.color_pair(9)) 
-                    stdscr.addch(begin_y+9,begin_x+i, "*", curses.color_pair(9)) 
-            for i in range(0, 10):        #printing vertical border
+                    stdscr.addch(begin_y+14,begin_x+i, "*", curses.color_pair(9)) 
+            for i in range(0, 15):        #printing vertical border
                     stdscr.addch(begin_y+i,begin_x, "*", curses.color_pair(9)) 
                     stdscr.addch(begin_y+i,begin_x+24, "*", curses.color_pair(9)) 
             stdscr.addstr(begin_y+2, begin_x+1, title,curses.color_pair(10))   #printing title, lives, time
             stdscr.addstr(begin_y+3, begin_x+1, lives, curses.color_pair(10))
             stdscr.addstr(begin_y+4, begin_x+1, time_elapsed, curses.color_pair(10))
             stdscr.addstr(begin_y+5, begin_x+1, 'keys: %s' %playObj.key, curses.color_pair(10))
+            stdscr.addstr(begin_y+7, begin_x+1, "Satchel: ", curses.color_pair(10))
+            if playObj.sword == True:
+                    stdscr.addstr(begin_y+8, begin_x+1, "Sword", curses.color_pair(10))
+            if playObj.bow == True:
+                    stdscr.addstr(begin_y+9, begin_x+1, "Bow", curses.color_pair(10))
             #TODO: Add if else statements to display win condition
             pass
 
