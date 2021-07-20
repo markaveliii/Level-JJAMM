@@ -80,7 +80,7 @@ if __name__ == "__main__":
         playObj.x_pos = playerX
         playObj.debugMode() # DEBUG, remove before release
         mapObj.displayMap()
-        menuObj.display_menu(mapObj.maxX+2, playObj)
+        menuObj.display_menu(mapObj.maxX+2, playObj, mapObj)
         # mapObj.displayMap()
         mapObj.stdscr.addstr(mapObj.maxY+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
         win = False
@@ -110,7 +110,7 @@ if __name__ == "__main__":
             elif c == ord('r'):
                 mapObj.reset(playObj)
 
-            menuObj.display_menu(mapObj.maxX+2, playObj)
+            menuObj.display_menu(mapObj.maxX+2, playObj, mapObj)
             # https://stackoverflow.com/questions/2259228/how-are-booleans-formatted-in-strings-in-python
             # mapObj.stdscr.addstr(mapObj.maxY+2, 0, '%s' % (playObj.sword), curses.color_pair(7)) 
             if win:

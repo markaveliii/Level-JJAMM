@@ -13,7 +13,7 @@ class Menu:
             self.start_time = round(time.time(),2)
             pass
 
-    def display_menu(self, begin_x, playObj):                #Displays menu border, time and lives
+    def display_menu(self, begin_x, playObj, mapObj):                #Displays menu border, time and lives
             stdscr = curses.initscr()
             curses.start_color()
             curses.init_pair(9, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
@@ -43,7 +43,16 @@ class Menu:
                     stdscr.addstr(begin_y+8, begin_x+1, "Sword", curses.color_pair(10))
             if playObj.bow == True:
                     stdscr.addstr(begin_y+9, begin_x+1, "Bow", curses.color_pair(10))
-            #TODO: Add if else statements to display win condition
+            if mapObj.winCond == 'T':
+                    stdscr.addstr(begin_y+11, begin_x+1, "Reach the exit!", curses.color_pair(10))
+            if mapObj.winCond == 'E':
+                    stdscr.addstr(begin_y+11, begin_x+1, "Kill all enemies!", curses.color_pair(10))
+            if mapObj.winCond == 'K':
+                    stdscr.addstr(begin_y+11, begin_x+1, "Grab the key!", curses.color_pair(10))
+            if mapObj.winCond == 'S':
+                    stdscr.addstr(begin_y+11, begin_x+1, "Grab the sword!", curses.color_pair(10))
+            if mapObj.winCond == 'B':
+                    stdscr.addstr(begin_y+11, begin_x+1, "Grab the bow!", curses.color_pair(10))
             pass
 
     def get_time():                      #Helper function to return elapsed time for level
