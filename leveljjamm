@@ -39,12 +39,12 @@ def use_sword(c, playObj, mapObj):
         if previous == '-' or previous == '1':
             mapObj.objArr[yDes][xDes] = '-'
             mapObj.stdscr.refresh()
-            time.sleep(0.1)
+            time.sleep(0.2)
             mapObj.displayMap()
         elif previous == 'e':
             mapObj.objArr[yDes][xDes] = 'e'
             mapObj.stdscr.refresh()
-            time.sleep(0.25)
+            time.sleep(0.2)
             mapObj.displayMap()
 
 
