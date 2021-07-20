@@ -11,48 +11,140 @@ import menu
 import player
 import time #found sleep function at https://www.tutorialspoint.com/python3/time_sleep.htm
 
-def use_weapon(c, playObj, mapObj):
+def use_sword(c, playObj, mapObj):
     if playObj.get_sword() == False:
         #display 'no sword' message in menu
         return
+    xDes = playObj.x_pos
+    yDes = playObj.y_pos
     if c == curses.KEY_LEFT:
         if playObj.x_pos > 0:
-            if mapObj.objArr[playObj.y_pos][playObj.x_pos - 1] == '1':
-                mapObj.objArr[playObj.y_pos][playObj.x_pos - 1] = 's'
-                mapObj.displayMap()
-                mapObj.objArr[playObj.y_pos][playObj.x_pos - 1] = '-'
-                mapObj.stdscr.refresh()
-                time.sleep(0.5)
-                mapObj.displayMap()
+            xDes -= 1
     if c == curses.KEY_RIGHT:
         if playObj.x_pos < mapObj.maxX - 1:
-            if mapObj.objArr[playObj.y_pos][playObj.x_pos + 1] == '1':
-                mapObj.objArr[playObj.y_pos][playObj.x_pos + 1] = 's'
-                mapObj.displayMap()
-                mapObj.objArr[playObj.y_pos][playObj.x_pos + 1] = '-'
-                mapObj.stdscr.refresh()
-                time.sleep(0.5)
-                mapObj.displayMap()
+            xDes += 1
     if c == curses.KEY_UP:
         if playObj.y_pos < mapObj.maxY - 1:
-            if mapObj.objArr[playObj.y_pos - 1][playObj.x_pos] == '1':
-                mapObj.objArr[playObj.y_pos - 1][playObj.x_pos] = 's'
-                mapObj.displayMap()
-                mapObj.objArr[playObj.y_pos - 1][playObj.x_pos] = '-'
-                mapObj.stdscr.refresh()
-                time.sleep(0.5)
-                mapObj.displayMap()
+            yDes -= 1
     if c == curses.KEY_DOWN:
         if playObj.y_pos > 0:
-            if mapObj.objArr[playObj.y_pos + 1][playObj.x_pos] == '1':
-                mapObj.objArr[playObj.y_pos + 1][playObj.x_pos] = 's'
-                mapObj.displayMap()
-                mapObj.objArr[playObj.y_pos + 1][playObj.x_pos] = '-'
-                mapObj.stdscr.refresh()
-                time.sleep(0.5)
-                mapObj.displayMap()
+            yDes += 1
+
+    if xDes >= mapObj.maxX or xDes < 0 or yDes >= mapObj.maxY or yDes < 0:
+        return
+    if mapObj.objArr[yDes][xDes] == '1' or mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
+        previous =  mapObj.objArr[yDes][xDes]
+        mapObj.objArr[yDes][xDes] = 's'
+        mapObj.displayMap()
+        if previous == '-' or previous == '1':
+            mapObj.objArr[yDes][xDes] = '-'
+            mapObj.stdscr.refresh()
+            time.sleep(0.1)
+            mapObj.displayMap()
+        elif previous == 'e':
+            mapObj.objArr[yDes][xDes] = 'e'
+            mapObj.stdscr.refresh()
+            time.sleep(0.25)
+            mapObj.displayMap()
 
 
+def use_bow(c, playObj, mapObj):
+    if playObj.get_bow() == False:
+        #display 'no bow' message in menu
+        return
+    xDes = playObj.x_pos
+    yDes = playObj.y_pos
+    if c == curses.KEY_LEFT:
+        if  playObj.x_pos > 0:
+            xDes -= 1
+            while xDes > 0:
+                if mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
+                    previous = mapObj.objArr[yDes][xDes]
+                    mapObj.objArr[yDes][xDes] = 'b'
+                    mapObj.displayMap()
+                    mapObj.objArr[yDes][xDes] = previous
+                    mapObj.stdscr.refresh()
+                    time.sleep(0.1)
+                    mapObj.displayMap()
+                    xDes-=1
+                else:
+                    if mapObj.objArr[yDes][xDes] == '1':
+                        mapObj.objArr[yDes][xDes] = 'b'
+                        mapObj.displayMap()
+                        mapObj.objArr[yDes][xDes] = '-'
+                        mapObj.stdscr.refresh()
+                        time.sleep(0.1)
+                        mapObj.displayMap()
+                    break
+
+    if c == curses.KEY_RIGHT:
+        if playObj.x_pos < mapObj.maxX - 1:
+            xDes += 1
+            while xDes < mapObj.maxX - 1:
+                if mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
+                    previous = mapObj.objArr[yDes][xDes]
+                    mapObj.objArr[yDes][xDes] = 'b'
+                    mapObj.displayMap()
+                    mapObj.objArr[yDes][xDes] = previous
+                    mapObj.stdscr.refresh()
+                    time.sleep(0.1)
+                    mapObj.displayMap()
+                    xDes += 1
+                else:
+                    if mapObj.objArr[yDes][xDes] == '1':
+                        mapObj.objArr[yDes][xDes] = 'b'
+                        mapObj.displayMap()
+                        mapObj.objArr[yDes][xDes] = '-'
+                        mapObj.stdscr.refresh()
+                        time.sleep(0.1)
+                        mapObj.displayMap()
+                    break
+
+    if c == curses.KEY_UP:
+        if playObj.y_pos < mapObj.maxY - 1:
+            yDes -= 1
+            while yDes < mapObj.maxY - 1:
+                if mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
+                    previous = mapObj.objArr[yDes][xDes]
+                    mapObj.objArr[yDes][xDes] = 'b'
+                    mapObj.displayMap()
+                    mapObj.objArr[yDes][xDes] = previous
+                    mapObj.stdscr.refresh()
+                    time.sleep(0.1)
+                    mapObj.displayMap()
+                    yDes -= 1
+                else:
+                    if mapObj.objArr[yDes][xDes] == '1':
+                        mapObj.objArr[yDes][xDes] = 'b'
+                        mapObj.displayMap()
+                        mapObj.objArr[yDes][xDes] = '-'
+                        mapObj.stdscr.refresh()
+                        time.sleep(0.1)
+                        mapObj.displayMap()
+                    break
+
+    if c == curses.KEY_DOWN:
+        if playObj.y_pos > 0:
+            yDes += 1
+            while yDes > 0:
+                if mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
+                    previous = mapObj.objArr[yDes][xDes]
+                    mapObj.objArr[yDes][xDes] = 'b'
+                    mapObj.displayMap()
+                    mapObj.objArr[yDes][xDes] = previous
+                    mapObj.stdscr.refresh()
+                    time.sleep(0.1)
+                    mapObj.displayMap()
+                    yDes += 1
+                else:
+                    if mapObj.objArr[yDes][xDes] == '1':
+                        mapObj.objArr[yDes][xDes] = 'b'
+                        mapObj.displayMap()
+                        mapObj.objArr[yDes][xDes] = '-'
+                        mapObj.stdscr.refresh()
+                        time.sleep(0.1)
+                        mapObj.displayMap()
+                    break
 
 if __name__ == "__main__":
 
@@ -105,10 +197,22 @@ if __name__ == "__main__":
                 win = playObj.move('d', mapObj)
 
             elif c == curses.KEY_LEFT or c == curses.KEY_RIGHT or c == curses.KEY_UP or c == curses.KEY_DOWN:
-                use_weapon(c, playObj, mapObj)
+                equipped = playObj.get_equipped()
+                if equipped == 'sword':
+                    use_sword(c, playObj, mapObj)
+                elif equipped == 'bow':
+                    use_bow(c, playObj, mapObj)
 
             elif c == ord('r'):
                 mapObj.reset(playObj)
+
+            elif c == ord('1'):
+                if playObj.get_sword():
+                    playObj.swap_equipped('sword')
+
+            elif c == ord('2'):
+                if playObj.get_bow():
+                    playObj.swap_equipped('bow')
 
             menuObj.display_menu(mapObj.maxX+2, playObj, mapObj)
             # https://stackoverflow.com/questions/2259228/how-are-booleans-formatted-in-strings-in-python

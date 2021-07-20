@@ -11,6 +11,7 @@ class Player:
         self.debug = False
         self.key = 0
         self.lives = 3
+        self.equipped = None
 
     def debugMode(self):
         self.debug = True
@@ -22,6 +23,23 @@ class Player:
     #insert sword into inventory
     def set_sword(self):
         self.sword = True
+        self.equipped = 'sword'
+
+    #check inventory for bow
+    def get_bow(self):
+        return self.bow
+
+    #insert bow into inventory
+    def set_bow(self):
+        self.bow = True
+        self.equipped = 'bow'
+
+    #check for equipped item
+    def get_equipped(self):
+        return self.equipped
+
+    def swap_equipped(self, swap):
+        self.equipped = swap
 
     #check for enemy in destination cell
     def enemy_there(self, dest):
@@ -37,7 +55,7 @@ class Player:
             self.set_sword()
             return True
         elif dest == 'b':
-            self.bow = True
+            self.set_bow()
             return True
         elif dest == 'k':
             self.key += 1
