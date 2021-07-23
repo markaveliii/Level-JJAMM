@@ -9,6 +9,7 @@ class Map:
     maxY = 0
     maxX = 0
     winCond = 'L'
+    exitArr = []
     # stdscr
     
     def printInitLets(self):
@@ -22,11 +23,19 @@ class Map:
         for y in range(self.maxY):
             #print(y)
             for x in range(self.maxX):
-                print(self.objArr[y][x], end = '')
+                print(self.objArr[y][x], end = ' ')
+            print()
+
+    def printExits(self):
+        for y in range(self.maxY):
+            #print(y)
+            for x in range(self.maxX):
+                print(self.exitArr[y][x], end = ', ')
             print()
 
 
-    def loadMap(self, inFile):
+
+    def loadMap(self, inFile, path):
         curFile = open(inFile, 'r')
         self.maxX = len(curFile.readline()) - 1
         self.maxY = 0
@@ -38,6 +47,7 @@ class Map:
         self.maxY += 1
         self.initArr = [[0 for y in range(self.maxX+1)] for x in range(self.maxY)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
         self.objArr = [[0 for y in range(self.maxX+1)] for x in range(self.maxY)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
+        self.exitArr = [[-1 for y in range(self.maxX+1)] for x in range(self.maxY)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
         y = 0
         x = 0
         curFile.seek(0) # https://www.tutorialspoint.com/How-to-use-seek-method-to-reset-a-file-read-write-position-in-Python
@@ -50,6 +60,7 @@ class Map:
                     if character == 'p':
                         yPos = y
                         xPos = x
+
                     x += 1
                 y += 1
             else:
@@ -59,6 +70,29 @@ class Map:
             for character in line:
                 if character != '\n':
                     self.winCond = character
+
+
+        if path == './dungeon':
+            for y in range(self.maxY):
+                for x in range(self.maxX):
+                    if self.initArr[y][x] == 'e':
+                        self.initArr[y][x] = 'w'
+                        self.objArr[y][x] = 'w'
+                        ex = x + 1
+                        exNum = ''
+                        while self.initArr[y][ex] != 'e' and ex < self.maxX:
+                            exNum += self.initArr[y][ex]
+                            ex += 1
+                        if exNum.isnumeric():
+                            exNum = int(exNum)
+                        x += 1
+                        while self.objArr[y][x] != 'e' and ex < self.maxX:
+                            self.exitArr[y][x] = exNum
+                            x += 1
+                        if self.objArr[y][x] == 'e':
+                            self.objArr[y][x] = 'w'
+                            self.initArr[y][x] = 'w'
+
         return yPos, xPos
         '''
         y = 0
@@ -74,6 +108,13 @@ class Map:
         '''
 
     #Jerry wrote loadEnemy which is a modified loadMap
+    # TODO: Instead of repeating loadmap, we really just need
+    # to look through the objarray and see if we find numbers
+    # if we do that, then we simply need to check and see if
+    # the exit array at this coordinate has a value > 0 
+    # if both those are correct, THEN we load the enemy
+    # TL;DR: Just look through the loop and find enemies,
+    # don't bother reloading the entire map
     def loadEnemy(self, inFile):
         curFile = open(inFile, 'r')
         self.maxX = len(curFile.readline()) - 1

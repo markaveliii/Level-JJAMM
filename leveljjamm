@@ -10,6 +10,13 @@ import creature
 import menu
 import player
 import time #found sleep function at https://www.tutorialspoint.com/python3/time_sleep.htm
+import re
+
+def atoi(text): # copied exactly from: https://stackoverflow.com/questions/5967500/how-to-correctly-sort-a-string-with-a-number-inside
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text): # copied exactly from: https://stackoverflow.com/questions/5967500/how-to-correctly-sort-a-string-with-a-number-inside
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]
 
 def use_sword(c, playObj, mapObj):
     if playObj.get_sword() == False:
@@ -160,17 +167,16 @@ if __name__ == "__main__":
             inFile.append(os.path.join(root, name))
         for name in directories:
             inFile.append(os.path.join(root, name))
-    inFile.sort()
+    inFile.sort(key=natural_keys)
 
     fileNum = 0
     mapObj.setupMap()
     menuObj = menu.Menu()
     playObj = player.Player()
     for fi in inFile:
-        playerY, playerX = mapObj.loadMap(inFile[fileNum])
+        playerY, playerX = mapObj.loadMap(inFile[fileNum], path)
         playObj.y_pos = playerY
         playObj.x_pos = playerX
-        playObj.debugMode() # DEBUG, remove before release
         mapObj.displayMap()
         menuObj.display_menu(mapObj.maxX+2, playObj, mapObj)
         # mapObj.displayMap()
