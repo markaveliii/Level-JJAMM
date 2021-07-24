@@ -13,9 +13,6 @@ class Player:
         self.lives = 3
         self.equipped = None
 
-    def debugMode(self):
-        self.debug = True
-
     #check inventory for sword
     def get_sword(self):
         return self.sword
@@ -42,8 +39,8 @@ class Player:
         self.equipped = swap
 
     #check for enemy in destination cell
-    def enemy_there(self, dest):
-        if dest == '1' or dest == '2' or dest == '3' or dest == '4':
+    def enemy_there(self, mapObj, desy, desx):
+        if mapObj.objArr[desy][desx].isnumeric() and mapObj.exitArr[desy][desx] < 0:
             # print('you died')
             return True
         else:
@@ -96,37 +93,52 @@ class Player:
 
         if dest == 'w' or dest.isupper():
              return
-        elif self.enemy_there(dest):
-            print('You died')
+        elif self.enemy_there(mapObj, desy, desx):
+            # print('You died') # If we include quotes like this,
+            # we'll want to print them at a specific location in
+            # menu. Perhaps we could create menu functions to
+            # call here, and when an item is picked up?
             mapObj.objArr[desy][desx] = 'd'
             mapObj.displayMap()
-            mapObj.stdscr.refresh()
+            # mapObj.stdscr.refresh()
             time.sleep(1)
             mapObj.reset(self)
             mapObj.displayMap()
             return
         elif self.item_there(dest):
-            print('You picked up the item!')
-        elif dest == 'e':
+            print()
+            # print('You picked up the item!')
+
+        elif mapObj.exitArr[desy][desx] == 'q':
             if mapObj.winCheck(self):
                 mapObj.objArr[self.y_pos][self.x_pos] = '-'
                 self.x_pos = desx
                 self.y_pos = desy
                 dest = 'p'
                 mapObj.displayMap()
-                mapObj.stdscr.refresh()
+                # mapObj.stdscr.refresh()
                 time.sleep(1)
-                return True
+                return -1
+        elif mapObj.exitArr[desy][desx] >= 0: #Previously:  elif dest == 'e'
+            if mapObj.winCheck(self):
+                mapObj.objArr[self.y_pos][self.x_pos] = '-'
+                self.x_pos = desx
+                self.y_pos = desy
+                dest = 'p'
+                mapObj.displayMap()
+                # mapObj.stdscr.refresh()
+                time.sleep(1)
+                return mapObj.exitArr[desy][desx]
 
 
                         
 
         #updates objArr for map
         mapObj.objArr[desy][desx] = 'p'
-        if not mapObj.initArr[self.y_pos][self.x_pos] == 'e':
+        if mapObj.exitArr[self.y_pos][self.x_pos] < 0:
             mapObj.objArr[self.y_pos][self.x_pos] = '-'
         else:
-            mapObj.objArr[self.y_pos][self.x_pos] = 'e'
+            mapObj.objArr[self.y_pos][self.x_pos] = mapObj.initArr[self.y_pos][self.x_pos]
         self.x_pos = desx
         self.y_pos = desy
 

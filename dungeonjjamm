@@ -45,12 +45,10 @@ def use_sword(c, playObj, mapObj):
         mapObj.displayMap()
         if previous == '-' or previous == '1':
             mapObj.objArr[yDes][xDes] = '-'
-            mapObj.stdscr.refresh()
             time.sleep(0.2)
             mapObj.displayMap()
         elif previous == 'e':
             mapObj.objArr[yDes][xDes] = 'e'
-            mapObj.stdscr.refresh()
             time.sleep(0.2)
             mapObj.displayMap()
 
@@ -170,17 +168,21 @@ if __name__ == "__main__":
     inFile.sort(key=natural_keys)
 
     fileNum = 0
+    newMap = 0
+    preFile = 0
     mapObj.setupMap()
     menuObj = menu.Menu()
     playObj = player.Player()
-    for fi in inFile:
+
+    while fileNum >= 0:
         playerY, playerX = mapObj.loadMap(inFile[fileNum])
+        mapObj.loadExits()
+
         playObj.y_pos = playerY
         playObj.x_pos = playerX
         mapObj.displayMap()
         menuObj.display_menu(mapObj.maxX+2, playObj, mapObj)
-        # mapObj.displayMap()
-        mapObj.stdscr.addstr(mapObj.maxY+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
+        # mapObj.stdscr.addstr(mapObj.maxY+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
         win = False
         while True:
             # Here we can call a gameplay function, which will
@@ -188,19 +190,23 @@ if __name__ == "__main__":
             # on it, as well as control enemies
             c = mapObj.stdscr.getch()
             if c == ord('q') or c == ord('n'):
+                if ((fileNum + 1) < len(inFile)):
+                    fileNum += 1
+                else:
+                    fileNum = -1
                 break
 
             elif c == ord('w'):
-                win = playObj.move('w', mapObj)
+                newMap = playObj.move('w', mapObj)
 
             elif c == ord('a'):
-                win = playObj.move('a', mapObj)
+                newMap = playObj.move('a', mapObj)
             
             elif c == ord('s'):
-                win = playObj.move('s', mapObj)
+                newMap = playObj.move('s', mapObj)
 
             elif c == ord('d'):
-                win = playObj.move('d', mapObj)
+                newMap = playObj.move('d', mapObj)
 
             elif c == curses.KEY_LEFT or c == curses.KEY_RIGHT or c == curses.KEY_UP or c == curses.KEY_DOWN:
                 equipped = playObj.get_equipped()
@@ -221,22 +227,38 @@ if __name__ == "__main__":
                     playObj.swap_equipped('bow')
 
             menuObj.display_menu(mapObj.maxX+2, playObj, mapObj)
+
             # https://stackoverflow.com/questions/2259228/how-are-booleans-formatted-in-strings-in-python
             # mapObj.stdscr.addstr(mapObj.maxY+2, 0, '%s' % (playObj.sword), curses.color_pair(7)) 
-            if win:
+            if isinstance(newMap, int):
+                # Here, I should check if win condition is 'pickup something'. If so, change current 
+                # placement in inFile array to preFile (which will just be the current file)
+                preFile = fileNum
+                fileNum = newMap
                 win = False
+                mapObj.stdscr.clear()
                 break
+            '''
+            elif isinstance(newMap, str):
+                c = 'q'
+                fileNum = -1
+                break
+            '''
             
             #print("x: ", playObj.x_pos, "y: ", playObj.y_pos) test to see if map bounds weren't violated.
 
-        if c == ord('q'):
+
+        if c == ord('q') or c == ord('n'):
             mapObj.stdscr.clear()
             mapObj.stdscr.refresh()
-            break
+            if c == ord('q'):
+                break
 
+        ''' 
         mapObj.stdscr.clear()
         mapObj.stdscr.refresh()
         fileNum += 1
+        '''
 
     curses.nocbreak()
     mapObj.stdscr.keypad(False)
