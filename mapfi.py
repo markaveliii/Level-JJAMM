@@ -35,7 +35,7 @@ class Map:
 
 
 
-    def loadMap(self, inFile, path):
+    def loadMap(self, inFile):
         curFile = open(inFile, 'r')
         self.maxX = len(curFile.readline()) - 1
         self.maxY = 0
@@ -72,28 +72,30 @@ class Map:
                     self.winCond = character
 
 
-        if path == './dungeon':
-            for y in range(self.maxY):
-                for x in range(self.maxX):
-                    if self.initArr[y][x] == 'e':
-                        self.initArr[y][x] = 'w'
-                        self.objArr[y][x] = 'w'
-                        ex = x + 1
-                        exNum = ''
-                        while self.initArr[y][ex] != 'e' and ex < self.maxX:
-                            exNum += self.initArr[y][ex]
-                            ex += 1
-                        if exNum.isnumeric():
-                            exNum = int(exNum)
-                        x += 1
-                        while self.objArr[y][x] != 'e' and ex < self.maxX:
-                            self.exitArr[y][x] = exNum
-                            x += 1
-                        if self.objArr[y][x] == 'e':
-                            self.objArr[y][x] = 'w'
-                            self.initArr[y][x] = 'w'
 
         return yPos, xPos
+    
+    def loadExits(self):
+        for y in range(self.maxY):
+            for x in range(self.maxX):
+                if self.initArr[y][x] == 'e':
+                    self.initArr[y][x] = '-'
+                    self.objArr[y][x] = '-'
+                    ex = x + 1
+                    exNum = ''
+                    while self.initArr[y][ex] != 'e' and ex < self.maxX:
+                        exNum += self.initArr[y][ex]
+                        ex += 1
+                    if exNum.isnumeric():
+                        exNum = int(exNum)
+                    x += 1
+                    while self.objArr[y][x] != 'e' and ex < self.maxX:
+                        self.exitArr[y][x] = exNum
+                        x += 1
+                    if self.objArr[y][x] == 'e':
+                        self.objArr[y][x] = '-'
+                        self.initArr[y][x] = '-'
+
         '''
         y = 0
         for line in curFile:
@@ -150,10 +152,10 @@ class Map:
                 break
         return enemies
 
-    def mapSwitch(self, obj):
+    def mapSwitch(self, obj, y, x):
         if obj.isupper():
             return obj, 7
-        elif obj == '1':
+        elif obj.isnumeric() and self.exitArr[y][x] < 0:
             return 'X', 1
 
         elif obj == 's':
@@ -168,8 +170,8 @@ class Map:
         elif obj == 'k':
             return ' ', 3
 
-        elif obj == 'e':
-            return ' ', 6
+        elif (obj.isnumeric() and self.exitArr[y][x] >= 0) or obj == 'q':
+            return obj, 6
 
         elif obj == 'w':
             return ' ', 7
@@ -204,8 +206,9 @@ class Map:
     def displayMap(self):
         for y in range(self.maxY):
             for x in range(self.maxX):
-                symbol, color = self.mapSwitch(self.objArr[y][x])
+                symbol, color = self.mapSwitch(self.objArr[y][x], y, x)
                 self.stdscr.addstr(y, x, symbol, curses.color_pair(color))
+        self.stdscr.refresh()
 
     def reset(self, playObj):
         resKey = 0
@@ -233,7 +236,7 @@ class Map:
             # check if all enemies defeated
             for y in range(self.maxY):
                 for x in range(self.maxX):
-                    if self.objArr[y][x].isnumeric():
+                    if self.objArr[y][x].isnumeric() and self.exitArr[y][x] < 0:
                         return False
             return True
         elif self.winCond == 'S':
