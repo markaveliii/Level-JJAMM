@@ -10,20 +10,24 @@ class Map:
     maxX = 0
     winCond = 'L'
     exitArr = []
+    startY = 0
+    startX = 0
     # stdscr
     
     def printInitLets(self):
         for y in range(self.maxY):
             #print(y)
             for x in range(self.maxX):
-                print(self.initArr[y][x], end = '')
+                self.stdscr.addstr(self.maxY + 2 + y, 0 + x, self.objArr[y][x], curses.color_pair(10))
+                # print(self.initArr[y][x], end = '')
             print()
 
     def printObjLets(self):
         for y in range(self.maxY):
             #print(y)
             for x in range(self.maxX):
-                print(self.objArr[y][x], end = ' ')
+                self.stdscr.addstr(self.maxY + 2 + y, self.maxX + 3 + x, self.initArr[y][x], curses.color_pair(10))
+                # print(self.objArr[y][x], end = ' ')
             print()
 
     def printExits(self):
@@ -58,8 +62,8 @@ class Map:
                     self.initArr[y][x] = character
                     self.objArr[y][x] = character
                     if character == 'p':
-                        yPos = y
-                        xPos = x
+                        self.startY = y
+                        self.startX = x
 
                     x += 1
                 y += 1
@@ -73,7 +77,7 @@ class Map:
 
 
 
-        return yPos, xPos
+        return self.startY, self.startX
     
     def loadExits(self):
         for y in range(self.maxY):

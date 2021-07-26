@@ -156,8 +156,9 @@ if __name__ == "__main__":
     # path = input('input the directory name: ')
     path = 'tutorials' # Temporary, for testing
     path = './' + path
-    mapObj = mapfi.Map()
+    # mapArr[fileNum] = mapfi.Map()
     inFile = []
+    mapArr = []
     # path = './levels'
 
     for root, directories, files in os.walk(path, topdown=False): # https://careerkarma.com/blog/python-list-files-in-directory/
@@ -168,27 +169,37 @@ if __name__ == "__main__":
     inFile.sort(key=natural_keys)
 
     fileNum = 0
+    while fileNum < len(inFile):
+        mapArr.append(mapfi.Map())
+        playerY, playerX = mapArr[fileNum].loadMap(inFile[fileNum])
+        mapArr[fileNum].loadExits()
+        fileNum += 1
+
+    fileNum = 0
+    while fileNum < len(mapArr):
+        mapArr[fileNum].setupMap()
+        # mapArr[fileNum].printObjLets()
+        # print()
+        fileNum += 1
+
+    fileNum = 0
     newMap = 0
-    preFile = 0
-    mapObj.setupMap()
+    # preFile = 0
     menuObj = menu.Menu()
     playObj = player.Player()
 
-    while fileNum >= 0:
-        playerY, playerX = mapObj.loadMap(inFile[fileNum])
-        mapObj.loadExits()
-
-        playObj.y_pos = playerY
-        playObj.x_pos = playerX
-        mapObj.displayMap()
-        menuObj.display_menu(mapObj.maxX+2, playObj, mapObj)
-        # mapObj.stdscr.addstr(mapObj.maxY+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
-        win = False
+    while fileNum >= 0 and fileNum < len(inFile):
+        playObj.y_pos = mapArr[fileNum].startY
+        playObj.x_pos = mapArr[fileNum].startX
+        mapArr[fileNum].displayMap()
+        menuObj.display_menu(mapArr[fileNum].maxX+2, playObj, mapArr[fileNum])
+        # mapArr[fileNum].stdscr.addstr(mapArr[fileNum].maxY+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
         while True:
+            mapArr[fileNum].displayMap()
             # Here we can call a gameplay function, which will
             # take in user input and decide what to do based
             # on it, as well as control enemies
-            c = mapObj.stdscr.getch()
+            c = mapArr[fileNum].stdscr.getch()
             if c == ord('q') or c == ord('n'):
                 if ((fileNum + 1) < len(inFile)):
                     fileNum += 1
@@ -197,26 +208,26 @@ if __name__ == "__main__":
                 break
 
             elif c == ord('w'):
-                newMap = playObj.move('w', mapObj)
+                newMap = playObj.move('w', mapArr[fileNum])
 
             elif c == ord('a'):
-                newMap = playObj.move('a', mapObj)
+                newMap = playObj.move('a', mapArr[fileNum])
             
             elif c == ord('s'):
-                newMap = playObj.move('s', mapObj)
+                newMap = playObj.move('s', mapArr[fileNum])
 
             elif c == ord('d'):
-                newMap = playObj.move('d', mapObj)
+                newMap = playObj.move('d', mapArr[fileNum])
 
             elif c == curses.KEY_LEFT or c == curses.KEY_RIGHT or c == curses.KEY_UP or c == curses.KEY_DOWN:
                 equipped = playObj.get_equipped()
                 if equipped == 'sword':
-                    use_sword(c, playObj, mapObj)
+                    use_sword(c, playObj, mapArr[fileNum])
                 elif equipped == 'bow':
-                    use_bow(c, playObj, mapObj)
+                    use_bow(c, playObj, mapArr[fileNum])
 
             elif c == ord('r'):
-                mapObj.reset(playObj)
+                mapArr[fileNum].reset(playObj)
 
             elif c == ord('1'):
                 if playObj.get_sword():
@@ -226,44 +237,44 @@ if __name__ == "__main__":
                 if playObj.get_bow():
                     playObj.swap_equipped('bow')
 
-            menuObj.display_menu(mapObj.maxX+2, playObj, mapObj)
+
+            menuObj.display_menu(mapArr[fileNum].maxX+2, playObj, mapArr[fileNum])
+            # mapArr[fileNum].printInitLets()
+            # mapArr[fileNum].printObjLets()
 
             # https://stackoverflow.com/questions/2259228/how-are-booleans-formatted-in-strings-in-python
-            # mapObj.stdscr.addstr(mapObj.maxY+2, 0, '%s' % (playObj.sword), curses.color_pair(7)) 
+            # mapArr[fileNum].stdscr.addstr(mapArr[fileNum].maxY+2, 0, '%s' % (playObj.sword), curses.color_pair(7)) 
             if isinstance(newMap, int):
-                # Here, I should check if win condition is 'pickup something'. If so, change current 
-                # placement in inFile array to preFile (which will just be the current file)
-                preFile = fileNum
+                mapArr[fileNum].winCond = 'T'
+                mapArr[fileNum].stdscr.clear()
                 fileNum = newMap
-                win = False
-                mapObj.stdscr.clear()
                 break
-            '''
             elif isinstance(newMap, str):
                 c = 'q'
                 fileNum = -1
                 break
-            '''
             
             #print("x: ", playObj.x_pos, "y: ", playObj.y_pos) test to see if map bounds weren't violated.
 
 
         if c == ord('q') or c == ord('n'):
-            mapObj.stdscr.clear()
-            mapObj.stdscr.refresh()
+            mapArr[fileNum].stdscr.clear()
+            mapArr[fileNum].stdscr.refresh()
             if c == ord('q'):
                 break
 
-        ''' 
-        mapObj.stdscr.clear()
-        mapObj.stdscr.refresh()
+        '''
+        mapArr[fileNum].stdscr.clear()
+        mapArr[fileNum].stdscr.refresh()
         fileNum += 1
         '''
 
+    if fileNum >= len(inFile): fileNum = 0
     curses.nocbreak()
-    mapObj.stdscr.keypad(False)
+    mapArr[fileNum].stdscr.keypad(False)
     curses.echo()
     curses.endwin()
 
-    # print('maxY: ', mapObj.maxY, '\nmaxX: ', mapObj.maxX) # This was a test,
+
+    # print('maxY: ', mapArr[fileNum].maxY, '\nmaxX: ', mapArr[fileNum].maxX) # This was a test,
     # proves that we don't need a getter, we can reference class objects directly
