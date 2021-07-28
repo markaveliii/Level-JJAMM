@@ -8,6 +8,7 @@ import time
 class Menu:
     def __init__(self):                             #holds level start time to calculate time for timer
             self.start_time = round(time.time(),2)
+            self.current_deaths = 0
 
     def reset_timer(self):                              #resets timer for new level
             self.start_time = round(time.time(),2)
@@ -18,12 +19,13 @@ class Menu:
             curses.start_color()
             curses.init_pair(9, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
             curses.init_pair(10, curses.COLOR_WHITE, curses.COLOR_BLACK)
+            curses.init_pair(11, curses.COLOR_RED, curses.COLOR_BLACK)
             begin_y = 3
             height = 5
             width = 70
             win = curses.newwin(height, width, begin_y, begin_x+2)
             #change to deaths when player deaths is updated
-            deathNum = playObj.lives;
+            deathNum = playObj.deaths;
             deaths = "Deaths: " + str(deathNum)
             title = "Menu:"
             current_time = round(time.time(), 2)
@@ -67,6 +69,11 @@ class Menu:
                     stdscr.addstr(begin_y+11, begin_x+1, "Grab the sword!", curses.color_pair(10))
             if mapObj.winCond == 'B':
                     stdscr.addstr(begin_y+11, begin_x+1, "Grab the bow!", curses.color_pair(10))
+            if self.current_deaths < deathNum:
+                    self.current_deaths = deathNum 
+                    stdscr.addstr(begin_y+13, begin_x+1, "XXX You died!!! XXX", curses.color_pair(11))
+            else:
+                    stdscr.addstr(begin_y+13, begin_x+1, "                   ", curses.color_pair(11))
             pass
 
     def get_time():                      #Helper function to return elapsed time for level
