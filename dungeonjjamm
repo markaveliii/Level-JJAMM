@@ -173,6 +173,7 @@ if __name__ == "__main__":
         mapArr.append(mapfi.Map())
         playerY, playerX = mapArr[fileNum].loadMap(inFile[fileNum])
         mapArr[fileNum].loadExits()
+        mapArr[fileNum].loadEnemy()
         fileNum += 1
 
     fileNum = 0
@@ -191,7 +192,7 @@ if __name__ == "__main__":
     while fileNum >= 0 and fileNum < len(inFile):
         playObj.y_pos = mapArr[fileNum].startY
         playObj.x_pos = mapArr[fileNum].startX
-        mapArr[fileNum].displayMap()
+        #mapArr[fileNum].displayMap()
         menuObj.display_menu(mapArr[fileNum].maxX+2, playObj, mapArr[fileNum])
         # mapArr[fileNum].stdscr.addstr(mapArr[fileNum].maxY+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
         while True:
@@ -241,6 +242,15 @@ if __name__ == "__main__":
             menuObj.display_menu(mapArr[fileNum].maxX+2, playObj, mapArr[fileNum])
             # mapArr[fileNum].printInitLets()
             # mapArr[fileNum].printObjLets()
+
+            #Enemy movement
+            for enemy in mapArr[fileNum].enemyArr:
+                check = enemy.movement(mapArr[fileNum])
+                if(check[0] == 2):
+                    mapArr[fileNum].reset(playObj)
+        
+            
+
 
             # https://stackoverflow.com/questions/2259228/how-are-booleans-formatted-in-strings-in-python
             # mapArr[fileNum].stdscr.addstr(mapArr[fileNum].maxY+2, 0, '%s' % (playObj.sword), curses.color_pair(7)) 

@@ -12,6 +12,7 @@ class Map:
     exitArr = []
     startY = 0
     startX = 0
+    enemyArr = []
     # stdscr
     
     def printInitLets(self):
@@ -114,46 +115,25 @@ class Map:
         '''
 
     #Jerry wrote loadEnemy which is a modified loadMap
-    # TODO: Instead of repeating loadmap, we really just need
-    # to look through the objarray and see if we find numbers
-    # if we do that, then we simply need to check and see if
-    # the exit array at this coordinate has a value > 0 
-    # if both those are correct, THEN we load the enemy
-    # TL;DR: Just look through the loop and find enemies,
-    # don't bother reloading the entire map
-    def loadEnemy(self, inFile):
-        curFile = open(inFile, 'r')
-        self.maxX = len(curFile.readline()) - 1
-        self.maxY = 0
-        for line in curFile:
-            if line != '\n':
-                self.maxY += 1
-            else:
-                break
-        self.maxY += 1
-        self.initArr = [[0 for y in range(self.maxX+1)] for x in range(self.maxY)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
-        self.objArr = [[0 for y in range(self.maxX+1)] for x in range(self.maxY)] # https://stackoverflow.com/questions/2397141/how-to-initialize-a-two-dimensional-array-in-python
-        y = 0
-        x = 0
+    # has been updated to no longer reloads map
+    def loadEnemy(self):
         enemies = []
-        curFile.seek(0) # https://www.tutorialspoint.com/How-to-use-seek-method-to-reset-a-file-read-write-position-in-Python
-        for line in curFile:
-            x = 0
-            if line != '\n':
-                for character in line:
-                    self.initArr[y][x] = character
-                    self.objArr[y][x] = character
-                    try:
-                        character = int(character)
-                    except ValueError:
-                        character = 0
-                    if character != 0:
-                        enemy = creature.creature(character, x, y)
-                        enemies.append(enemy)
-                    x += 1
-                y += 1
-            else:
-                break
+        for y in range(self.maxY):
+            for x in range(self.maxX):
+                character = self.objArr[y][x]
+                try:
+                    character = int(character)
+                except ValueError:
+                    character = 0
+                if(self.exitArr[y][x] >= 0):
+                     character = 0
+                if character != 0:
+                    enemy = creature.creature()
+                    enemy.typ = character
+                    enemy.xpos = x 
+                    enemy.ypos = y
+                    enemies.append(enemy)
+        self.enemyArr = enemies
         return enemies
 
     def mapSwitch(self, obj, y, x):
@@ -189,6 +169,7 @@ class Map:
 
     def setupMap(self):
         self.stdscr = curses.initscr()
+        #self.stdscr.nodelay(True)
         curses.noecho()
         curses.cbreak()
         self.stdscr.keypad(True)
