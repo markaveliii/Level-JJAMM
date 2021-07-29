@@ -12,6 +12,15 @@ class Player:
         self.key = 0
         self.lives = 3
         self.equipped = None
+        self.deathCount = 0
+
+    #increments death count
+    def death(self):
+        self.deathCount += 1
+    
+    #returns death count
+    def get_deaths():
+        return self.deathCount
 
     #check inventory for sword
     def get_sword(self):
