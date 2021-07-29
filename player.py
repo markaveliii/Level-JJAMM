@@ -10,7 +10,7 @@ class Player:
         self.bow = False
         self.debug = False
         self.key = 0
-        self.lives = 3
+        self.deaths = 0
         self.equipped = None
         self.deathCount = 0
 
@@ -51,6 +51,7 @@ class Player:
     def enemy_there(self, mapObj, desy, desx):
         if mapObj.objArr[desy][desx].isnumeric() and mapObj.exitArr[desy][desx] < 0:
             # print('you died')
+            self.deaths += 1
             return True
         else:
             return False

@@ -8,6 +8,7 @@ import time
 class Menu:
     def __init__(self):                             #holds level start time to calculate time for timer
             self.start_time = round(time.time(),2)
+            self.current_deaths = 0
 
     def reset_timer(self):                              #resets timer for new level
             self.start_time = round(time.time(),2)
@@ -18,12 +19,14 @@ class Menu:
             curses.start_color()
             curses.init_pair(9, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
             curses.init_pair(10, curses.COLOR_WHITE, curses.COLOR_BLACK)
+            curses.init_pair(11, curses.COLOR_RED, curses.COLOR_BLACK)
             begin_y = 3
             height = 5
             width = 70
             win = curses.newwin(height, width, begin_y, begin_x+2)
-            livesNum = playObj.lives;
-            lives = "Lives: " + str(livesNum)
+            #change to deaths when player deaths is updated
+            deathNum = playObj.deaths;
+            deaths = "Deaths: " + str(deathNum)
             title = "Menu:"
             current_time = round(time.time(), 2)
             time_elapsed = "Time Elapsed: " + str(round((current_time - self.start_time), 2))
@@ -35,14 +38,27 @@ class Menu:
                     stdscr.addch(begin_y+i,begin_x, "*", curses.color_pair(9)) 
                     stdscr.addch(begin_y+i,begin_x+24, "*", curses.color_pair(9)) 
             stdscr.addstr(begin_y+2, begin_x+1, title,curses.color_pair(10))   #printing title, lives, time
-            stdscr.addstr(begin_y+3, begin_x+1, lives, curses.color_pair(10))
+            stdscr.addstr(begin_y+3, begin_x+1, deaths, curses.color_pair(10))
             stdscr.addstr(begin_y+4, begin_x+1, time_elapsed, curses.color_pair(10))
             stdscr.addstr(begin_y+5, begin_x+1, 'keys: %s' %playObj.key, curses.color_pair(10))
             stdscr.addstr(begin_y+7, begin_x+1, "Satchel: ", curses.color_pair(10))
-            if playObj.sword == True:
-                    stdscr.addstr(begin_y+8, begin_x+1, "Sword", curses.color_pair(10))
-            if playObj.bow == True:
-                    stdscr.addstr(begin_y+9, begin_x+1, "Bow", curses.color_pair(10))
+            if playObj.sword == True and playObj.bow == True:
+                    if playObj.equipped == 'sword':
+                            stdscr.addstr(begin_y+8, begin_x+1, "***Sword***", curses.color_pair(10))
+                            stdscr.addstr(begin_y+9, begin_x+1, "Bow        ", curses.color_pair(10))
+                    else:
+                            stdscr.addstr(begin_y+8, begin_x+1, "Sword      ", curses.color_pair(10))
+                            stdscr.addstr(begin_y+9, begin_x+1, "***Bow***  ", curses.color_pair(10))
+            if playObj.bow == True and playObj.sword == False:
+                    if playObj.equipped == 'bow':
+                            stdscr.addstr(begin_y+9, begin_x+1, "***Bow***  ", curses.color_pair(10))
+                    else:
+                            stdscr.addstr(begin_y+9, begin_x+1, "Bow        ", curses.color_pair(10))
+            if playObj.sword == True and playObj.bow == False:
+                    if playObj.equipped == 'sword':
+                            stdscr.addstr(begin_y+8, begin_x+1, "***Sword***", curses.color_pair(10))
+                    else:
+                            stdscr.addstr(begin_y+8, begin_x+1, "Sword      ", curses.color_pair(10))
             if mapObj.winCond == 'T':
                     stdscr.addstr(begin_y+11, begin_x+1, "Reach the exit!", curses.color_pair(10))
             if mapObj.winCond == 'E':
@@ -53,6 +69,11 @@ class Menu:
                     stdscr.addstr(begin_y+11, begin_x+1, "Grab the sword!", curses.color_pair(10))
             if mapObj.winCond == 'B':
                     stdscr.addstr(begin_y+11, begin_x+1, "Grab the bow!", curses.color_pair(10))
+            if self.current_deaths < deathNum:
+                    self.current_deaths = deathNum 
+                    stdscr.addstr(begin_y+13, begin_x+1, "XXX You died!!! XXX", curses.color_pair(11))
+            else:
+                    stdscr.addstr(begin_y+13, begin_x+1, "                   ", curses.color_pair(11))
             pass
 
     def get_time():                      #Helper function to return elapsed time for level
