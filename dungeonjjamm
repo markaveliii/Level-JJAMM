@@ -62,7 +62,7 @@ def use_bow(c, playObj, mapObj):
     if c == curses.KEY_LEFT:
         if  playObj.x_pos > 0:
             xDes -= 1
-            while xDes > 0:
+            while xDes >= 0:
                 if mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
                     previous = mapObj.objArr[yDes][xDes]
                     mapObj.objArr[yDes][xDes] = 'b'
@@ -85,7 +85,7 @@ def use_bow(c, playObj, mapObj):
     if c == curses.KEY_RIGHT:
         if playObj.x_pos < mapObj.maxX - 1:
             xDes += 1
-            while xDes < mapObj.maxX - 1:
+            while xDes <= mapObj.maxX - 1:
                 if mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
                     previous = mapObj.objArr[yDes][xDes]
                     mapObj.objArr[yDes][xDes] = 'b'
@@ -108,7 +108,7 @@ def use_bow(c, playObj, mapObj):
     if c == curses.KEY_UP:
         if playObj.y_pos < mapObj.maxY - 1:
             yDes -= 1
-            while yDes < mapObj.maxY - 1:
+            while yDes >= 0:
                 if mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
                     previous = mapObj.objArr[yDes][xDes]
                     mapObj.objArr[yDes][xDes] = 'b'
@@ -131,7 +131,7 @@ def use_bow(c, playObj, mapObj):
     if c == curses.KEY_DOWN:
         if playObj.y_pos > 0:
             yDes += 1
-            while yDes > 0:
+            while yDes <= mapObj.maxY - 1:
                 if mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
                     previous = mapObj.objArr[yDes][xDes]
                     mapObj.objArr[yDes][xDes] = 'b'
@@ -151,10 +151,53 @@ def use_bow(c, playObj, mapObj):
                         mapObj.displayMap()
                     break
 
+
+def game(c, playObj, mapObj):
+
+    newMap = None
+    if c == ord('w'):
+        newMap = playObj.move('w', mapObj)
+
+    elif c == ord('a'):
+        newMap = playObj.move('a', mapObj)
+    
+    elif c == ord('s'):
+        newMap = playObj.move('s', mapObj)
+
+    elif c == ord('d'):
+        newMap = playObj.move('d', mapObj)
+
+    elif c == curses.KEY_LEFT or c == curses.KEY_RIGHT or c == curses.KEY_UP or c == curses.KEY_DOWN:
+        equipped = playObj.get_equipped()
+        if equipped == 'sword':
+            use_sword(c, playObj, mapObj)
+        elif equipped == 'bow':
+            use_bow(c, playObj, mapObj)
+
+    elif c == ord('r'):
+        mapObj.reset(playObj)
+
+    elif c == ord('1'):
+        if playObj.get_sword():
+            playObj.swap_equipped('sword')
+
+    elif c == ord('2'):
+        if playObj.get_bow():
+            playObj.swap_equipped('bow')
+
+    mapObj.displayMap()
+    menuObj.display_menu(mapObj.maxX+2, playObj, mapObj)
+
+    return newMap
+    # mapObj.printInitLets()
+    # mapObj.printObjLets()
+
+
+
 if __name__ == "__main__":
 
     # path = input('input the directory name: ')
-    path = 'tutorials' # Temporary, for testing
+    path = 'levels' # Temporary, for testing
     path = './' + path
     # mapArr[fileNum] = mapfi.Map()
     inFile = []
@@ -192,68 +235,32 @@ if __name__ == "__main__":
     while fileNum >= 0 and fileNum < len(inFile):
         playObj.y_pos = mapArr[fileNum].startY
         playObj.x_pos = mapArr[fileNum].startX
-        #mapArr[fileNum].displayMap()
+        mapArr[fileNum].displayMap()
         menuObj.display_menu(mapArr[fileNum].maxX+2, playObj, mapArr[fileNum])
         # mapArr[fileNum].stdscr.addstr(mapArr[fileNum].maxY+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
         while True:
-            mapArr[fileNum].displayMap()
-            # Here we can call a gameplay function, which will
-            # take in user input and decide what to do based
-            # on it, as well as control enemies
             c = mapArr[fileNum].stdscr.getch()
-            if c == ord('q') or c == ord('n'):
-                if ((fileNum + 1) < len(inFile)):
-                    fileNum += 1
+
+            if c != -1:
+                if c == ord('q') or c == ord('n'):
+                    if ((fileNum + 1) < len(inFile)):
+                        fileNum += 1
+                    else:
+                        fileNum = -1
+                    break
                 else:
-                    fileNum = -1
-                break
+                    newMap = game(c, playObj, mapArr[fileNum])
 
-            elif c == ord('w'):
-                newMap = playObj.move('w', mapArr[fileNum])
-
-            elif c == ord('a'):
-                newMap = playObj.move('a', mapArr[fileNum])
-            
-            elif c == ord('s'):
-                newMap = playObj.move('s', mapArr[fileNum])
-
-            elif c == ord('d'):
-                newMap = playObj.move('d', mapArr[fileNum])
-
-            elif c == curses.KEY_LEFT or c == curses.KEY_RIGHT or c == curses.KEY_UP or c == curses.KEY_DOWN:
-                equipped = playObj.get_equipped()
-                if equipped == 'sword':
-                    use_sword(c, playObj, mapArr[fileNum])
-                elif equipped == 'bow':
-                    use_bow(c, playObj, mapArr[fileNum])
-
-            elif c == ord('r'):
-                mapArr[fileNum].reset(playObj)
-
-            elif c == ord('1'):
-                if playObj.get_sword():
-                    playObj.swap_equipped('sword')
-
-            elif c == ord('2'):
-                if playObj.get_bow():
-                    playObj.swap_equipped('bow')
-
-
-            menuObj.display_menu(mapArr[fileNum].maxX+2, playObj, mapArr[fileNum])
-            # mapArr[fileNum].printInitLets()
-            # mapArr[fileNum].printObjLets()
 
             #Enemy movement
-            for enemy in mapArr[fileNum].enemyArr:
-                check = enemy.movement(mapArr[fileNum])
-                if(check[0] == 2):
-                    mapArr[fileNum].reset(playObj)
-        
-            
-
+            if False: # TODO: Implement timer and move enemies
+                # plus reset timer if it's >= our selected time
+                for enemy in mapArr[fileNum].enemyArr:
+                    check = enemy.movement(mapArr[fileNum])
+                    if(check[0] == 2):
+                        mapArr[fileNum].reset(playObj)
 
             # https://stackoverflow.com/questions/2259228/how-are-booleans-formatted-in-strings-in-python
-            # mapArr[fileNum].stdscr.addstr(mapArr[fileNum].maxY+2, 0, '%s' % (playObj.sword), curses.color_pair(7)) 
             if isinstance(newMap, int):
                 mapArr[fileNum].winCond = 'T'
                 mapArr[fileNum].stdscr.clear()
