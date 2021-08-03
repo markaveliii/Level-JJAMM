@@ -148,11 +148,27 @@ class Map:
         elif obj == 'b':
             return 'M', 5
 
+        elif obj == 'b_u_atk':
+            return '^', 5
+
+        elif obj == 'b_d_atk':
+            return 'v', 5
+
+        elif obj == 'b_l_atk':
+            return '<', 5
+
+        elif obj == 'b_r_atk':
+            return '>', 5
+
         elif obj == 'p':
             return ' ', 2
 
         elif obj == 'k':
             return ' ', 3
+
+        elif obj == 'sh_atk':
+            return '+', 5
+
 
         elif (obj.isnumeric() and self.exitArr[y][x] >= 0) or obj == 'q':
             return obj, 6

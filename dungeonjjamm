@@ -39,16 +39,16 @@ def use_sword(c, playObj, mapObj):
 
     if xDes >= mapObj.maxX or xDes < 0 or yDes >= mapObj.maxY or yDes < 0:
         return
-    if mapObj.objArr[yDes][xDes] == '1' or mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
+    if mapObj.objArr[yDes][xDes].isnumeric() or mapObj.objArr[yDes][xDes] == '-':
         previous =  mapObj.objArr[yDes][xDes]
         mapObj.objArr[yDes][xDes] = 's'
         mapObj.displayMap()
-        if previous == '-' or previous == '1':
+        if previous == '-' or (previous.isnumeric() and mapObj.exitArr[yDes][xDes] < 0):
             mapObj.objArr[yDes][xDes] = '-'
             time.sleep(0.2)
             mapObj.displayMap()
-        elif previous == 'e':
-            mapObj.objArr[yDes][xDes] = 'e'
+        elif previous.isnumeric() and mapObj.exitArr[yDes][xDes] >= 0:
+            mapObj.objArr[yDes][xDes] = mapObj.initArr[yDes][xDes]
             time.sleep(0.2)
             mapObj.displayMap()
 
@@ -63,9 +63,9 @@ def use_bow(c, playObj, mapObj):
         if  playObj.x_pos > 0:
             xDes -= 1
             while xDes >= 0:
-                if mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
+                if mapObj.objArr[yDes][xDes] == '-' or (mapObj.objArr[yDes][xDes].isnumeric() and mapObj.exitArr[yDes][xDes] >= 0):
                     previous = mapObj.objArr[yDes][xDes]
-                    mapObj.objArr[yDes][xDes] = 'b'
+                    mapObj.objArr[yDes][xDes] = 'b_l_atk'
                     mapObj.displayMap()
                     mapObj.objArr[yDes][xDes] = previous
                     mapObj.stdscr.refresh()
@@ -73,8 +73,8 @@ def use_bow(c, playObj, mapObj):
                     mapObj.displayMap()
                     xDes-=1
                 else:
-                    if mapObj.objArr[yDes][xDes] == '1':
-                        mapObj.objArr[yDes][xDes] = 'b'
+                    if mapObj.objArr[yDes][xDes].isnumeric() and mapObj.exitArr[yDes][xDes] < 0:
+                        mapObj.objArr[yDes][xDes] = 'b_l_atk'
                         mapObj.displayMap()
                         mapObj.objArr[yDes][xDes] = '-'
                         mapObj.stdscr.refresh()
@@ -86,9 +86,9 @@ def use_bow(c, playObj, mapObj):
         if playObj.x_pos < mapObj.maxX - 1:
             xDes += 1
             while xDes <= mapObj.maxX - 1:
-                if mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
+                if mapObj.objArr[yDes][xDes] == '-' or (mapObj.objArr[yDes][xDes].isnumeric() and mapObj.exitArr[yDes][xDes] >= 0):
                     previous = mapObj.objArr[yDes][xDes]
-                    mapObj.objArr[yDes][xDes] = 'b'
+                    mapObj.objArr[yDes][xDes] = 'b_r_atk'
                     mapObj.displayMap()
                     mapObj.objArr[yDes][xDes] = previous
                     mapObj.stdscr.refresh()
@@ -96,8 +96,8 @@ def use_bow(c, playObj, mapObj):
                     mapObj.displayMap()
                     xDes += 1
                 else:
-                    if mapObj.objArr[yDes][xDes] == '1':
-                        mapObj.objArr[yDes][xDes] = 'b'
+                    if mapObj.objArr[yDes][xDes].isnumeric() and mapObj.exitArr[yDes][xDes] < 0:
+                        mapObj.objArr[yDes][xDes] = 'b_r_atk'
                         mapObj.displayMap()
                         mapObj.objArr[yDes][xDes] = '-'
                         mapObj.stdscr.refresh()
@@ -109,9 +109,9 @@ def use_bow(c, playObj, mapObj):
         if playObj.y_pos < mapObj.maxY - 1:
             yDes -= 1
             while yDes >= 0:
-                if mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
+                if mapObj.objArr[yDes][xDes] == '-' or (mapObj.objArr[yDes][xDes].isnumeric() and mapObj.exitArr[yDes][xDes] >= 0):
                     previous = mapObj.objArr[yDes][xDes]
-                    mapObj.objArr[yDes][xDes] = 'b'
+                    mapObj.objArr[yDes][xDes] = 'b_u_atk'
                     mapObj.displayMap()
                     mapObj.objArr[yDes][xDes] = previous
                     mapObj.stdscr.refresh()
@@ -119,8 +119,8 @@ def use_bow(c, playObj, mapObj):
                     mapObj.displayMap()
                     yDes -= 1
                 else:
-                    if mapObj.objArr[yDes][xDes] == '1':
-                        mapObj.objArr[yDes][xDes] = 'b'
+                    if mapObj.objArr[yDes][xDes].isnumeric() and mapObj.exitArr[yDes][xDes] < 0:
+                        mapObj.objArr[yDes][xDes] = 'b_u_atk'
                         mapObj.displayMap()
                         mapObj.objArr[yDes][xDes] = '-'
                         mapObj.stdscr.refresh()
@@ -132,9 +132,9 @@ def use_bow(c, playObj, mapObj):
         if playObj.y_pos > 0:
             yDes += 1
             while yDes <= mapObj.maxY - 1:
-                if mapObj.objArr[yDes][xDes] == '-' or mapObj.objArr[yDes][xDes] == 'e':
+                if mapObj.objArr[yDes][xDes] == '-' or (mapObj.objArr[yDes][xDes].isnumeric() and mapObj.exitArr[yDes][xDes] >= 0):
                     previous = mapObj.objArr[yDes][xDes]
-                    mapObj.objArr[yDes][xDes] = 'b'
+                    mapObj.objArr[yDes][xDes] = 'b_d_atk'
                     mapObj.displayMap()
                     mapObj.objArr[yDes][xDes] = previous
                     mapObj.stdscr.refresh()
@@ -142,14 +142,73 @@ def use_bow(c, playObj, mapObj):
                     mapObj.displayMap()
                     yDes += 1
                 else:
-                    if mapObj.objArr[yDes][xDes] == '1':
-                        mapObj.objArr[yDes][xDes] = 'b'
+                    if mapObj.objArr[yDes][xDes].isnumeric() and mapObj.exitArr[yDes][xDes] < 0:
+                        mapObj.objArr[yDes][xDes] = 'b_d_atk'
                         mapObj.displayMap()
                         mapObj.objArr[yDes][xDes] = '-'
                         mapObj.stdscr.refresh()
                         time.sleep(0.1)
                         mapObj.displayMap()
                     break
+
+def use_shuriken(playObj, mapObj):
+    if playObj.get_shuriken() == False:
+        return
+    xDes = playObj.x_pos
+    yDes = playObj.y_pos
+
+    if (xDes - 1) > 0 and (yDes + 1) <= mapObj.maxY - 1:
+        if mapObj.objArr[yDes + 1][xDes - 1] == '-' or mapObj.objArr[yDes + 1][xDes - 1].isnumeric():
+                previous_bl = mapObj.objArr[yDes + 1][xDes - 1]
+                mapObj.objArr[yDes + 1][xDes - 1] = 'sh_atk'
+
+    if (xDes - 1) > 0 and (yDes - 1) > 0:
+        if mapObj.objArr[yDes - 1][xDes - 1] == '-' or mapObj.objArr[yDes - 1][xDes - 1].isnumeric():
+                previous_ul = mapObj.objArr[yDes - 1][xDes - 1]
+                mapObj.objArr[yDes - 1][xDes - 1] = 'sh_atk'
+
+    if (xDes + 1) <= mapObj.maxX - 1 and (yDes + 1) <= mapObj.maxY - 1:
+        if mapObj.objArr[yDes + 1][xDes + 1] == '-' or mapObj.objArr[yDes + 1][xDes + 1].isnumeric():
+                previous_br = mapObj.objArr[yDes + 1][xDes + 1] 
+                mapObj.objArr[yDes + 1][xDes + 1] = 'sh_atk'
+
+    if (xDes + 1) <= mapObj.maxX - 1 and (yDes - 1) > 0:
+        if mapObj.objArr[yDes - 1][xDes + 1] == '-' or mapObj.objArr[yDes - 1][xDes + 1].isnumeric():
+                previous_ur = mapObj.objArr[yDes - 1][xDes + 1]
+                mapObj.objArr[yDes - 1][xDes + 1] = 'sh_atk'
+    mapObj.displayMap()
+
+    if (xDes - 1) > 0 and (yDes + 1) <= mapObj.maxY - 1:
+        if mapObj.objArr[yDes + 1][xDes - 1] == 'sh_atk':
+            if mapObj.exitArr[yDes + 1][xDes - 1] < 0:
+                mapObj.objArr[yDes + 1][xDes - 1] = '-'
+            else:
+                mapObj.objArr[yDes + 1][xDes - 1] = previous_bl
+
+    if (xDes - 1) > 0 and (yDes - 1) > 0:
+        if mapObj.objArr[yDes - 1][xDes - 1] == 'sh_atk':
+            if mapObj.exitArr[yDes - 1][xDes - 1] < 0:
+                mapObj.objArr[yDes - 1][xDes - 1] = '-'
+            else:
+                mapObj.objArr[yDes - 1][xDes - 1] = previous_ul
+
+    if (xDes + 1) <= mapObj.maxX - 1 and (yDes + 1) <= mapObj.maxY - 1:
+        if mapObj.objArr[yDes + 1][xDes + 1] == 'sh_atk':
+            if mapObj.exitArr[yDes + 1][xDes + 1] < 0:
+                mapObj.objArr[yDes + 1][xDes + 1] = '-'
+            else:
+                mapObj.objArr[yDes + 1][xDes + 1] = previous_br
+
+    if (xDes + 1) <= mapObj.maxX - 1 and (yDes - 1) > 0:
+        if mapObj.objArr[yDes - 1][xDes + 1] == 'sh_atk':
+            if mapObj.exitArr[yDes - 1][xDes + 1] < 0:
+                mapObj.objArr[yDes - 1][xDes + 1] = '-'
+            else:
+                mapObj.objArr[yDes - 1][xDes + 1] = previous_ur
+
+    time.sleep(0.2)
+    mapObj.displayMap()
+
 
 
 def game(c, playObj, mapObj):
@@ -173,6 +232,8 @@ def game(c, playObj, mapObj):
             use_sword(c, playObj, mapObj)
         elif equipped == 'bow':
             use_bow(c, playObj, mapObj)
+        elif equipped == 'shuriken':
+            use_shuriken(playObj, mapObj)
 
     elif c == ord('r'):
         mapObj.reset(playObj)
@@ -184,6 +245,10 @@ def game(c, playObj, mapObj):
     elif c == ord('2'):
         if playObj.get_bow():
             playObj.swap_equipped('bow')
+
+    elif c == ord('3'):
+        if playObj.get_shuriken():
+            playObj.swap_equipped('shuriken')
 
     mapObj.displayMap()
     menuObj.display_menu(mapObj.maxX+2, playObj, mapObj)

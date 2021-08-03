@@ -8,6 +8,7 @@ class Player:
         self.y_pos = 0
         self.sword = False
         self.bow = False
+        self.shuriken = False
         self.debug = False
         self.key = 0
         self.deaths = 0
@@ -31,10 +32,18 @@ class Player:
         self.bow = True
         self.equipped = 'bow'
 
+    def set_shuriken(self):
+        self.shuriken = True
+        self.equipped = 'shuriken'
+
+    def get_shuriken(self):
+        return self.shuriken
+
     #check for equipped item
     def get_equipped(self):
         return self.equipped
 
+    #swap equipped item
     def swap_equipped(self, swap):
         self.equipped = swap
 
@@ -54,6 +63,9 @@ class Player:
             return True
         elif dest == 'b':
             self.set_bow()
+            return True
+        elif dest == 'sh':
+            self.set_shuriken()
             return True
         elif dest == 'k':
             self.key += 1
