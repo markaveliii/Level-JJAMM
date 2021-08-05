@@ -75,7 +75,7 @@ class Menu:
                     pad.addstr(0+13, begin_x+1, "XXX You died!!! XXX", curses.color_pair(11))
             else:
                     pad.addstr(0+13, begin_x+1, "                   ", curses.color_pair(11))
-            pad.refresh(0, 0, 0, begin_x, 25, mapObj.maxX + 40)
+            pad.refresh(0, 0, 0, begin_x, curses.COLS, curses.LINES)
             pass
 
     def get_time():                      #Helper function to return elapsed time for level
