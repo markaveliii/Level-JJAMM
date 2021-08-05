@@ -15,12 +15,13 @@ class Menu:
             pass
 
     def display_menu(self, begin_x, playObj, mapObj):                #Displays menu border, time and lives
-            stdscr = curses.initscr()
+            #stdscr = curses.initscr()
+            pad = curses.newpad(100,100)
             curses.start_color()
             curses.init_pair(9, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
             curses.init_pair(10, curses.COLOR_WHITE, curses.COLOR_BLACK)
             curses.init_pair(11, curses.COLOR_RED, curses.COLOR_BLACK)
-            begin_y = 3
+            #begin_y = 3
             height = 5
             width = 70
             win = curses.newwin(height, width, begin_y, begin_x+2)
@@ -30,50 +31,51 @@ class Menu:
             title = "Menu:"
             current_time = round(time.time(), 2)
             time_elapsed = "Time Elapsed: " + str(round((current_time - self.start_time), 2))
-            stdscr.refresh()
+            #stdscr.refresh()
             for i in range(0, 25):        #printing horizontal border
-                    stdscr.addch(begin_y,begin_x+i, "*", curses.color_pair(9)) 
-                    stdscr.addch(begin_y+14,begin_x+i, "*", curses.color_pair(9)) 
+                    pad.addch(0, i, "*", curses.color_pair(9)) 
+                    pad.addch(15, i, "*", curses.color_pair(9)) 
             for i in range(0, 15):        #printing vertical border
-                    stdscr.addch(begin_y+i,begin_x, "*", curses.color_pair(9)) 
-                    stdscr.addch(begin_y+i,begin_x+24, "*", curses.color_pair(9)) 
-            stdscr.addstr(begin_y+2, begin_x+1, title,curses.color_pair(10))   #printing title, lives, time
-            stdscr.addstr(begin_y+3, begin_x+1, deaths, curses.color_pair(10))
-            stdscr.addstr(begin_y+4, begin_x+1, time_elapsed, curses.color_pair(10))
-            stdscr.addstr(begin_y+5, begin_x+1, 'keys: %s' %playObj.key, curses.color_pair(10))
-            stdscr.addstr(begin_y+7, begin_x+1, "Satchel: ", curses.color_pair(10))
+                    pad.addch(0 , 0, "*", curses.color_pair(9)) 
+                    pad.addch(0 , 24, "*", curses.color_pair(9)) 
+            pad.addstr(0+2, begin_x+1, title,curses.color_pair(10))   #printing title, lives, time
+            pad.addstr(0+3, begin_x+1, deaths, curses.color_pair(10))
+            pad.addstr(0+4, begin_x+1, time_elapsed, curses.color_pair(10))
+            pad.addstr(0+5, begin_x+1, 'keys: %s' %playObj.key, curses.color_pair(10))
+            pad.addstr(0+7, begin_x+1, "Satchel: ", curses.color_pair(10))
             if playObj.sword == True and playObj.bow == True:
                     if playObj.equipped == 'sword':
-                            stdscr.addstr(begin_y+8, begin_x+1, "***Sword***", curses.color_pair(10))
-                            stdscr.addstr(begin_y+9, begin_x+1, "Bow        ", curses.color_pair(10))
+                            pad.addstr(0+8, begin_x+1, "***Sword***", curses.color_pair(10))
+                            pad.addstr(0+9, begin_x+1, "Bow        ", curses.color_pair(10))
                     else:
-                            stdscr.addstr(begin_y+8, begin_x+1, "Sword      ", curses.color_pair(10))
-                            stdscr.addstr(begin_y+9, begin_x+1, "***Bow***  ", curses.color_pair(10))
+                            pad.addstr(0+8, begin_x+1, "Sword      ", curses.color_pair(10))
+                            pad.addstr(0+9, begin_x+1, "***Bow***  ", curses.color_pair(10))
             if playObj.bow == True and playObj.sword == False:
                     if playObj.equipped == 'bow':
-                            stdscr.addstr(begin_y+9, begin_x+1, "***Bow***  ", curses.color_pair(10))
+                            pad.addstr(0+9, begin_x+1, "***Bow***  ", curses.color_pair(10))
                     else:
-                            stdscr.addstr(begin_y+9, begin_x+1, "Bow        ", curses.color_pair(10))
+                            pad.addstr(0+9, begin_x+1, "Bow        ", curses.color_pair(10))
             if playObj.sword == True and playObj.bow == False:
                     if playObj.equipped == 'sword':
-                            stdscr.addstr(begin_y+8, begin_x+1, "***Sword***", curses.color_pair(10))
+                            pad.addstr(0+8, begin_x+1, "***Sword***", curses.color_pair(10))
                     else:
-                            stdscr.addstr(begin_y+8, begin_x+1, "Sword      ", curses.color_pair(10))
+                            pad.addstr(0+8, begin_x+1, "Sword      ", curses.color_pair(10))
             if mapObj.winCond == 'T':
-                    stdscr.addstr(begin_y+11, begin_x+1, "Reach the exit!", curses.color_pair(10))
+                    pad.addstr(0+11, begin_x+1, "Reach the exit!", curses.color_pair(10))
             if mapObj.winCond == 'E':
-                    stdscr.addstr(begin_y+11, begin_x+1, "Kill all enemies!", curses.color_pair(10))
+                    pad.addstr(0+11, begin_x+1, "Kill all enemies!", curses.color_pair(10))
             if mapObj.winCond == 'K':
-                    stdscr.addstr(begin_y+11, begin_x+1, "Grab the key!", curses.color_pair(10))
+                    pad.addstr(0+11, begin_x+1, "Grab the key!", curses.color_pair(10))
             if mapObj.winCond == 'S':
-                    stdscr.addstr(begin_y+11, begin_x+1, "Grab the sword!", curses.color_pair(10))
+                    pad.addstr(0+11, begin_x+1, "Grab the sword!", curses.color_pair(10))
             if mapObj.winCond == 'B':
-                    stdscr.addstr(begin_y+11, begin_x+1, "Grab the bow!", curses.color_pair(10))
+                    pad.addstr(0+11, begin_x+1, "Grab the bow!", curses.color_pair(10))
             if self.current_deaths < deathNum:
                     self.current_deaths = deathNum 
-                    stdscr.addstr(begin_y+13, begin_x+1, "XXX You died!!! XXX", curses.color_pair(11))
+                    pad.addstr(0+13, begin_x+1, "XXX You died!!! XXX", curses.color_pair(11))
             else:
-                    stdscr.addstr(begin_y+13, begin_x+1, "                   ", curses.color_pair(11))
+                    pad.addstr(0+13, begin_x+1, "                   ", curses.color_pair(11))
+            pad.refresh(0, 0, 0, begin_x, 25, mapObj.maxX + 40)
             pass
 
     def get_time():                      #Helper function to return elapsed time for level
