@@ -8,7 +8,7 @@ class Player:
         self.y_pos = 0
         self.sword = False
         self.bow = False
-        self.shuriken = False
+        self.shurikens = False
         self.debug = False
         self.key = 0
         self.deaths = 0
@@ -32,12 +32,14 @@ class Player:
         self.bow = True
         self.equipped = 'bow'
 
-    def set_shuriken(self):
-        self.shuriken = True
-        self.equipped = 'shuriken'
+    #check inveentory for shurikens
+    def get_shurikens(self):
+        return self.shurikens
 
-    def get_shuriken(self):
-        return self.shuriken
+    #insert shurikens into inventory
+    def set_shurikens(self):
+        self.shurikens = True
+        self.equipped = 'shurikens'
 
     #check for equipped item
     def get_equipped(self):
@@ -65,7 +67,7 @@ class Player:
             self.set_bow()
             return True
         elif dest == 'sh':
-            self.set_shuriken()
+            self.set_shurikens()
             return True
         elif dest == 'k':
             self.key += 1
