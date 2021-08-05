@@ -66,7 +66,7 @@ class Player:
         elif dest == 'b':
             self.set_bow()
             return True
-        elif dest == 'sh':
+        elif dest == 'h':
             self.set_shurikens()
             return True
         elif dest == 'k':
