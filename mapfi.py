@@ -188,6 +188,7 @@ class Map:
 
     def setupMap(self):
         self.stdscr = curses.initscr()
+        self.pad = curses.newpad(curses.COLS, curses.LINES)
         #self.stdscr.nodelay(True)
         curses.noecho()
         curses.cbreak()
@@ -211,8 +212,8 @@ class Map:
         for y in range(self.maxY):
             for x in range(self.maxX):
                 symbol, color = self.mapSwitch(self.objArr[y][x], y, x)
-                self.stdscr.addstr(y, x, symbol, curses.color_pair(color))
-        self.stdscr.refresh()
+                self.pad.addstr(y, x, symbol, curses.color_pair(color))
+        self.pad.refresh(0, 0, 0, 0, self.maxY, self.maxX)
 
     def reset(self, playObj):
         resKey = 0
