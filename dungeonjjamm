@@ -11,6 +11,7 @@ import menu
 import player
 import time #found sleep function at https://www.tutorialspoint.com/python3/time_sleep.htm
 import re
+import time
 
 def atoi(text): # copied exactly from: https://stackoverflow.com/questions/5967500/how-to-correctly-sort-a-string-with-a-number-inside
     return int(text) if text.isdigit() else text
@@ -302,17 +303,20 @@ if __name__ == "__main__":
     # preFile = 0
     menuObj = menu.Menu()
     playObj = player.Player()
+    enemyTime = time.time()
 
     while fileNum >= 0 and fileNum < len(inFile):
         playObj.y_pos = mapArr[fileNum].startY
         playObj.x_pos = mapArr[fileNum].startX
         mapArr[fileNum].displayMap()
         menuObj.display_menu(mapArr[fileNum].maxX+2, playObj, mapArr[fileNum])
+        mapArr[fileNum].stdscr.nodelay(False)
         # mapArr[fileNum].stdscr.addstr(mapArr[fileNum].maxY+1, 0, "Enter 'q' to exit, 'n' for next level", curses.color_pair(7))
         while True:
             c = mapArr[fileNum].stdscr.getch()
 
             if c != -1:
+                mapArr[fileNum].stdscr.nodelay(True)
                 if c == ord('q') or c == ord('n'):
                     if ((fileNum + 1) < len(inFile)):
                         fileNum += 1
@@ -324,12 +328,16 @@ if __name__ == "__main__":
 
 
             #Enemy movement
-            if False: # TODO: Implement timer and move enemies
+            currTime = time.time()
+            if currTime - enemyTime >= 2: # TODO: Implement timer and move enemies
                 # plus reset timer if it's >= our selected time
                 for enemy in mapArr[fileNum].enemyArr:
                     check = enemy.movement(mapArr[fileNum])
                     if(check[0] == 2):
                         mapArr[fileNum].reset(playObj)
+                enemyTime = time.time()
+                mapArr[fileNum].displayMap()
+                menuObj.display_menu(mapArr[fileNum].maxX+2, playObj, mapArr[fileNum])
 
             # https://stackoverflow.com/questions/2259228/how-are-booleans-formatted-in-strings-in-python
             if isinstance(newMap, int):
